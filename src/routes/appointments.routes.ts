@@ -1,41 +1,39 @@
 import { Router } from 'express';
-import { startOfHour, parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
+import { parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
 
 import AppoinmentsController from '../controllers/AppointmentsController';
+import CreateAppointmentService from '../services/CreateAppointmentsServices';
 
 const appointmentsRouter = Router();
-const appoinmentsController = new AppoinmentsController(); // instanciando a classe
+const appointmentsController = new AppoinmentsController(); // instanciando a classe
 
 // middlewares
 
 appointmentsRouter.get('/', (request, response) => {
-  const appointments = appoinmentsController.all(); // metódo de listagem dentro do controller
+  const appointments = appointmentsController.all(); // metódo de listagem dentro do controller
 
   return response.json(appointments);
 });
 
 appointmentsRouter.post('/', (request, response) => {
-  const { provider, date } = request.body;
+  try {
+    const { provider, date } = request.body;
 
-  const parsedDate = startOfHour(parseISO(date));
+    const parsedDate = parseISO(date); // transforma de string em data
 
-  const findAppointmentsInSameDate = appoinmentsController.findByDate(
-    parsedDate,
-  ); // passando pro metodo dentro do controller, a data formatada
+    const createAppointment = new CreateAppointmentService(
+      appointmentsController, // passando o controller, já que o service espera
+    );
 
-  // ver se existe um agendemento com o mesmo horário
-  if (findAppointmentsInSameDate) {
-    return response
-      .status(400)
-      .json({ error: 'This appointment is already booked' });
+    const appointment = createAppointment.execute({
+      date: parsedDate,
+      provider,
+    }); // executando a criação dentro do service
+
+    return response.json(appointment);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
   }
-
-  const appointment = appoinmentsController.create({
-    provider,
-    date: parsedDate,
-  }); // chamando o metódo de criação e passando os parametros
-
-  return response.json(appointment);
 });
 
 export default appointmentsRouter;
