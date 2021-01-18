@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import { startOfHour, parseISO, isEqual } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
+import { startOfHour, parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
 
-import Appointment from '../models/Appointment';
+import AppoinmentsController from '../controllers/AppointmentsController';
 
 const appointmentsRouter = Router();
-
-const appointments: Appointment[] = [];
+const appoinmentsController = new AppoinmentsController(); // instanciando a classe
 
 // middlewares
 appointmentsRouter.post('/', (request, response) => {
@@ -13,9 +12,9 @@ appointmentsRouter.post('/', (request, response) => {
 
   const parsedDate = startOfHour(parseISO(date));
 
-  const findAppointmentsInSameDate = appointments.find(appointment =>
-    isEqual(parsedDate, appointment.date),
-  );
+  const findAppointmentsInSameDate = appoinmentsController.findByDate(
+    parsedDate,
+  ); // passando pro metodo dentro do controller, a data formatada
 
   // ver se existe um agendemento com o mesmo horário
   if (findAppointmentsInSameDate) {
@@ -24,9 +23,7 @@ appointmentsRouter.post('/', (request, response) => {
       .json({ error: 'This appointment is already booked' });
   }
 
-  const appointment = new Appointment(provider, parsedDate); // instanciando o model e criando um novo agendamento
-
-  appointments.push(appointment);
+  const appointment = appoinmentsController.create(provider, parsedDate); // chamando o metódo de criação e passando os parametros
 
   return response.json(appointment);
 });
