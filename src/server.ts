@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/', (request, response) => response.json({ message: 'Dale to gostack' }));
+app.use(routes); // usando o arquivo index de rotas
 
 app.listen(3333, () => {
   console.log('Server is running... 🚀');
