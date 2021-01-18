@@ -12,7 +12,12 @@ class AppoinmentsRepository {
     this.appointments = [];
   }
 
-  // METÓDO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA/HORA
+  // METÓDO PARA LISTAGEM DE TODOS OS APPOINTMENTS
+  public all(): Appointment[] {
+    return this.appointments;
+  }
+
+  // METÓDO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA
   public findByDate(date: Date): Appointment | null {
     // caso encontre na mesma data retorna o próprio Appointment, caso não retorna null
 

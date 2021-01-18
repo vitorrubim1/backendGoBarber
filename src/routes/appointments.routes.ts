@@ -7,6 +7,13 @@ const appointmentsRouter = Router();
 const appoinmentsController = new AppoinmentsController(); // instanciando a classe
 
 // middlewares
+
+appointmentsRouter.get('/', (request, response) => {
+  const appointments = appoinmentsController.all(); // metódo de listagem dentro do controller
+
+  return response.json(appointments);
+});
+
 appointmentsRouter.post('/', (request, response) => {
   const { provider, date } = request.body;
 
