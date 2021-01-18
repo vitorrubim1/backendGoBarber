@@ -30,7 +30,10 @@ appointmentsRouter.post('/', (request, response) => {
       .json({ error: 'This appointment is already booked' });
   }
 
-  const appointment = appoinmentsController.create(provider, parsedDate); // chamando o metódo de criação e passando os parametros
+  const appointment = appoinmentsController.create({
+    provider,
+    date: parsedDate,
+  }); // chamando o metódo de criação e passando os parametros
 
   return response.json(appointment);
 });

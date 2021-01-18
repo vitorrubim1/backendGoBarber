@@ -2,8 +2,14 @@ import { isEqual } from 'date-fns';
 
 import Appointment from '../models/Appointment';
 
-// arquivo responsável por criar, armazenar, ler, editar
+// DTO: Data Transfer Object
 
+interface createAppointmentDTO {
+  provider: string;
+  date: Date;
+}
+
+// arquivo responsável por criar, armazenar, ler, editar
 class AppoinmentsRepository {
   private appointments: Appointment[]; // private: então não é acessível fora da classe
 
@@ -29,8 +35,8 @@ class AppoinmentsRepository {
   }
 
   // METÓDO DE CRIAÇÃO
-  public create(provider: string, date: Date): Appointment {
-    const appointment = new Appointment(provider, date); // instanciando o model e criando um novo agendamento
+  public create({ date, provider }: createAppointmentDTO): Appointment {
+    const appointment = new Appointment({ provider, date }); // instanciando o model e criando um novo agendamento
 
     this.appointments.push(appointment); // puxando pra lista
 
