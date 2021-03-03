@@ -10,7 +10,7 @@ interface createAppointmentDTO {
 }
 
 // arquivo responsável por criar, armazenar, ler, editar
-class AppoinmentsRepository {
+class AppointmentsRepository {
   private appointments: Appointment[]; // private: então não é acessível fora da classe
 
   constructor() {
@@ -44,4 +44,4 @@ class AppoinmentsRepository {
   }
 }
 
-export default AppoinmentsRepository;
+export default AppointmentsRepository;

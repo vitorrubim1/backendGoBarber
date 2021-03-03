@@ -1,7 +1,7 @@
 import { startOfHour } from 'date-fns';
 
 import Appointment from '../models/Appointment';
-import AppoinmentsController from '../controllers/AppointmentsController';
+import AppointmentsController from '../controllers/AppointmentsController';
 
 interface RequestDTO {
   provider: string;
@@ -9,10 +9,10 @@ interface RequestDTO {
 }
 
 class CreateAppointmentService {
-  private appointmentsController: AppoinmentsController;
+  private appointmentsController: AppointmentsController;
 
   // o parametro que recebo é a instacia de outra classe
-  constructor(appointmentsController: AppoinmentsController) {
+  constructor(appointmentsController: AppointmentsController) {
     this.appointmentsController = appointmentsController;
   }
 
