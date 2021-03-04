@@ -6,5 +6,10 @@
   "port": 5432,
   "username": "postgres",
   "password": "docker",
-  "database": "gostack_gobarber"
+  "database": "gostack_gobarber",
+  "migrations": ["./src/database/migrations/*.ts"],
+  "cli": {
+    "_comment": "configurações para a interface de linha de comando do typeorm",
+    "migrationsDir": "./src/database/migrations"
+  }
 }
