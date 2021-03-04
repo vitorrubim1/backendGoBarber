@@ -16,6 +16,7 @@ export default class CreateAppointments1614881851346
             type: 'varchar', // varchar pq vai ser do tipo uuid, pra melhor segurança
             isPrimary: true,
             generationStrategy: 'uuid', // gerar o campo id de forma automática, sendo um uuid
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'provider', // prestador de serviço
