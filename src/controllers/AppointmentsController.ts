@@ -1,46 +1,28 @@
-import { isEqual } from 'date-fns';
+import { EntityRepository, Repository } from 'typeorm';
 
 import Appointment from '../models/Appointment';
 
 // DTO: Data Transfer Object
 
-interface createAppointmentDTO {
-  provider: string;
-  date: Date;
-}
-
 // arquivo responsável por criar, armazenar, ler, editar
-class AppointmentsRepository {
-  private appointments: Appointment[]; // private: então não é acessível fora da classe
 
-  constructor() {
-    // iniciando a váriavel appointments, como array vazio
-    this.appointments = [];
-  }
-
-  // METÓDO PARA LISTAGEM DE TODOS OS APPOINTMENTS
-  public all(): Appointment[] {
-    return this.appointments;
-  }
+@EntityRepository(Appointment)
+class AppointmentsRepository extends Repository<Appointment> {
+  /*
+   extendendo Repository que possui todos metódos pronto, ex: (create, all, delete, update).
+   <Appointment>: tipagem da classe, que é o model
+  */
 
   // METÓDO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA
-  public findByDate(date: Date): Appointment | null {
+  public async findByDate(date: Date): Promise<Appointment | null> {
+    // Promise<>: pq a função é assincrona
     // caso encontre na mesma data retorna o próprio Appointment, caso não retorna null
 
-    const findAppointment = this.appointments.find(appointment =>
-      isEqual(date, appointment.date),
-    );
+    const findAppointment = await this.findOne({
+      where: { date }, // encontrar um agendamento que a data que eu recebo seja igual a alguma data no bd
+    });
 
     return findAppointment || null; // se não encontrar por padrão vem undefined, mas eu quero q seja null
-  }
-
-  // METÓDO DE CRIAÇÃO
-  public create({ date, provider }: createAppointmentDTO): Appointment {
-    const appointment = new Appointment({ provider, date }); // instanciando o model e criando um novo agendamento
-
-    this.appointments.push(appointment); // puxando pra lista
-
-    return appointment;
   }
 }
 

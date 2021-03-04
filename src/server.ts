@@ -1,3 +1,5 @@
+import 'reflect-metadata'; // typeorm exige por conta que utilizamos decorators
+
 import express from 'express';
 
 import routes from './routes';
