@@ -7,6 +7,9 @@
   "username": "postgres",
   "password": "docker",
   "database": "gostack_gobarber",
+  "entities": [
+    "./src/models/*.ts"
+  ],
   "migrations": ["./src/database/migrations/*.ts"],
   "cli": {
     "_comment": "configurações para a interface de linha de comando do typeorm",
