@@ -24,6 +24,9 @@ $ yarn typeorm migration:run
 # Refazer/Editar uma migration (SOMENTE SE NÃO TIVER SIDO VERSIONADA)
 $ yarn typeorm migration:revert
 
+# Visualizar as migrations que já foram executadas
+$ yarn typeorm migration:show
+
 ```
 
 
