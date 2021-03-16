@@ -24,6 +24,9 @@ $ yarn typeorm migration:run
 # Refazer/Editar uma migration (SOMENTE SE NÃO TIVER SIDO VERSIONADA COM GIT POR EXEMPLO)
 $ yarn typeorm migration:revert
 
+  # Caso uma migration tiver sido versionada e já estiver em uso teremos que criar uma nova, pra assim ser considerada
+  $ yarn typeorm migration:create -n EX: AlterProviderFieldToProviderId # mas tem que se atentar pq será uma migration de alteração, não de criação de uma nova tabela
+
 # Visualizar as migrations que já foram executadas
 $ yarn typeorm migration:show
 

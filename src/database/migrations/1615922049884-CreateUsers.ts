@@ -10,7 +10,7 @@ export default class CreateUsers1615922049884 implements MigrationInterface {
           {
             // colunas da tabela em formato de objeto
             name: 'id',
-            type: 'varchar', // varchar pq vai ser do tipo uuid, pra melhor segurança
+            type: 'uuid', //  tipo uuid pra melhor segurança
             isPrimary: true,
             generationStrategy: 'uuid', // gerar o campo id de forma automática, sendo um uuid
             default: 'uuid_generate_v4()',
