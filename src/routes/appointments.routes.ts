@@ -3,7 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import { parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
 
 import AppointmentsController from '../controllers/AppointmentsController';
-import CreateAppointmentService from '../services/CreateAppointmentsServices';
+import CreateAppointmentService from '../services/CreateAppointmentServices';
 
 const appointmentsRouter = Router();
 
@@ -18,7 +18,7 @@ appointmentsRouter.get('/', async (request, response) => {
 
 appointmentsRouter.post('/', async (request, response) => {
   try {
-    const { provider, date } = request.body;
+    const { provider_id, date } = request.body;
 
     const parsedDate = parseISO(date); // transforma de string em data
 
@@ -26,7 +26,7 @@ appointmentsRouter.post('/', async (request, response) => {
 
     const appointment = await createAppointment.execute({
       date: parsedDate,
-      provider,
+      provider_id,
     }); // executando a criação dentro do service
 
     return response.json(appointment);

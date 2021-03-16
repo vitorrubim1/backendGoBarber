@@ -5,19 +5,22 @@ import Appointment from '../models/Appointment';
 import AppointmentsController from '../controllers/AppointmentsController';
 
 interface RequestDTO {
-  provider: string;
+  provider_id: string;
   date: Date;
 }
 
 class CreateAppointmentService {
   // executando a criação de um novo agendamento. : Appointment = oq preciso retornar
-  public async execute({ date, provider }: RequestDTO): Promise<Appointment> {
+  public async execute({
+    date,
+    provider_id,
+  }: RequestDTO): Promise<Appointment> {
     // Promise<>: pq a função é assincrona
-    const appointmentsController = getCustomRepository(AppointmentsController);
+    const appointmentsRepository = getCustomRepository(AppointmentsController);
 
     const appointmentDate = startOfHour(date); // pra q seja agendado de hora em hora
 
-    const findAppointmentsInSameDate = await appointmentsController.findByDate(
+    const findAppointmentsInSameDate = await appointmentsRepository.findByDate(
       appointmentDate,
     ); // passando pro metodo dentro do controller, a data formatada
 
@@ -26,13 +29,13 @@ class CreateAppointmentService {
       throw Error('This appointment is already booked'); // criando um erro, pq não temos acesso ao request, response
     }
 
-    const appointment = appointmentsController.create({
+    const appointment = appointmentsRepository.create({
       // esse metódo só cria a instância do model
-      provider,
+      provider_id,
       date: appointmentDate,
     }); // chamando o metódo de criação e passando os parametros
 
-    await appointmentsController.save(appointment); // salvando no banco de dados
+    await appointmentsRepository.save(appointment); // salvando no banco de dados
 
     return appointment;
   }
