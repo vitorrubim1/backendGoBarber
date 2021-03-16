@@ -3,7 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm'; /*
   Entity: entidade que será salva no banco de dados
   Column: colunas do banco de dados
@@ -14,20 +14,23 @@ import {
 // Model está relacionado com uma tabela do banco de dados
 
 @Entity(
-  'appointments',
+  'users',
 ) /*
   @Entity: é um decorator, que funciona como uma função e como parametro enviará a classe Appointment abaixo
-  'appointments': tabela do banco de dados
+  'users': tabela do banco de dados
 */
-class Appointment {
+class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  provider: string;
+  name: string;
 
-  @Column('time with time zone')
-  date: Date;
+  @Column()
+  email: string;
+
+  @Column()
+  password: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -36,4 +39,4 @@ class Appointment {
   updated_at: Date;
 }
 
-export default Appointment;
+export default User;

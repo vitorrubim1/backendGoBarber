@@ -21,7 +21,7 @@ $ yarn typeorm migration:create -n CreateAppointments
 # Executa as migrations
 $ yarn typeorm migration:run
 
-# Refazer/Editar uma migration (SOMENTE SE NÃO TIVER SIDO VERSIONADA)
+# Refazer/Editar uma migration (SOMENTE SE NÃO TIVER SIDO VERSIONADA COM GIT POR EXEMPLO)
 $ yarn typeorm migration:revert
 
 # Visualizar as migrations que já foram executadas
