@@ -1,4 +1,5 @@
-import { getRepository } from 'typeorm'; //getRepository: para ter os metódos de criação, update, delete disponivel
+import { getRepository } from 'typeorm'; // getRepository: para ter os metódos de criação, update, delete disponivel
+import { hash } from 'bcryptjs';
 
 import User from '../models/User';
 
@@ -23,8 +24,14 @@ class CreateUserService {
       throw new Error('Email address already used another user.');
     }
 
+    const hashedPassword = await hash(password, 8); // criptografando a senha
+
     // criando a instância do usuário
-    const user = userRepository.create({ email, name, password });
+    const user = userRepository.create({
+      email,
+      name,
+      password: hashedPassword,
+    });
 
     // salvando no banco
     await userRepository.save(user);
