@@ -12,7 +12,7 @@ sessionsRouter.post('/', async (request, response) => {
 
     // instancio a classe de autenticação e executo
     const authenticateUserService = new AuthenticateUserService();
-    const { user } = await authenticateUserService.execute({
+    const { user, token } = await authenticateUserService.execute({
       email,
       password,
     }); // desacoplei a resposta da classe pra ficar mais semântico e saber oq estou retornando para o frontend
@@ -25,7 +25,7 @@ sessionsRouter.post('/', async (request, response) => {
       updated_at: user.updated_at,
     };
 
-    return response.json({ sessionsWithoutPassword });
+    return response.json({ sessionsWithoutPassword, token });
   } catch (err) {
     return response.status(400).json({ error: err.message });
   }

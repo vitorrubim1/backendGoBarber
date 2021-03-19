@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm'; // getRepository: para ter os metódos de criação, update, delete disponivel
 import { compare } from 'bcryptjs';
+import { sign } from 'jsonwebtoken'; // sign: pra criar um token/ assinar
 
 import User from '../models/User'; // representa uma tabela no banco
 
@@ -17,6 +18,7 @@ interface Request {
 interface Response {
   // retorno, caso a autenticação dê certo
   user: User;
+  token: string;
 }
 
 class AuthenticateUserService {
@@ -43,8 +45,19 @@ class AuthenticateUserService {
     }
 
     // Chegou até aqui, usuário autenticado
+
+    const token = sign({}, '55F1D5153F0C649D3406C4506DE66C99', {
+      subject: user.id,
+      expiresIn: '1d',
+    }); /*
+      primeiro parametro: payload (dá pra descriptografar). Fica dentro do token, mas não fica seguro
+      segundo parametro: chave secreta, que só a aplicação possa entender, só gerar qualquer coisa no md5 online
+      terceiro parametro: configurações do token, como id e tempo pra expirar o token
+    */
+
     return {
       user,
+      token,
     };
   }
 }
