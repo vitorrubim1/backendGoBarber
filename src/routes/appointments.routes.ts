@@ -3,7 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import { parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
 
 import AppointmentsController from '../controllers/AppointmentsController';
-import CreateAppointmentService from '../services/CreateAppointmentServices';
+import CreateAppointmentService from '../services/CreateAppointmentService';
 
 const appointmentsRouter = Router();
 
