@@ -4,6 +4,7 @@ import multer from 'multer'; // pra lidar com upload de imagem
 import uploadConfig from '../config/upload';
 
 import CreateUserService from '../services/CreateUserService';
+import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated'; // middleware de validação de autenticação
 
@@ -28,8 +29,8 @@ usersRouter.post('/', async (request, response) => {
     }; // pra não passar o password como informação
 
     return response.json(userWithoutPassword);
-  } catch (err) {
-    return response.status(400).json({ error: err.message });
+  } catch (error) {
+    return response.status(400).json({ error: error.message });
   }
 });
 
@@ -38,7 +39,28 @@ usersRouter.patch(
   ensureAuthenticated,
   upload.single('avatar'), // middleware responsável por criar uma única imagem, que recebe o parâmetro do "input"
   async (request, response) => {
-    return response.json({ ok: true });
+    try {
+      const updateUserAvatar = new UpdateUserAvatarService(); // instânciando a classe
+
+      const user = await updateUserAvatar.execute({
+        // passando os parâmetros que a classe espera
+        user_id: request.user.id, // request.user.id: vem da declaração de tipos
+        avatarFilename: request.file.filename,
+      });
+
+      const userWithoutPassword = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
+      };
+
+      return response.json(userWithoutPassword);
+    } catch (error) {
+      return response.status(400).json({ error: error.message });
+    }
   },
 ); // patch: pq quero atualizar uma única informação do usuário
 
