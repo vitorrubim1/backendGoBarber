@@ -2,6 +2,8 @@ import { getRepository } from 'typeorm'; // getRepository: para ter os metódos 
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken'; // sign: pra criar um token/ assinar
 
+import authConfig from '../config/auth'; // configurações do token
+
 import User from '../models/User'; // representa uma tabela no banco
 
 /*
@@ -46,9 +48,11 @@ class AuthenticateUserService {
 
     // Chegou até aqui, usuário autenticado
 
-    const token = sign({}, '55F1D5153F0C649D3406C4506DE66C99', {
+    const { expiresIn, secret } = authConfig.jwt; // desacoplando as informações do token pra usar aq em baixo
+
+    const token = sign({}, secret, {
       subject: user.id,
-      expiresIn: '1d',
+      expiresIn,
     }); /*
       primeiro parametro: payload (dá pra descriptografar). Fica dentro do token, mas não fica seguro
       segundo parametro: chave secreta, que só a aplicação possa entender, só gerar qualquer coisa no md5 online

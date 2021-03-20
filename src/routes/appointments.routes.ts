@@ -5,7 +5,11 @@ import { parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data
 import AppointmentsController from '../controllers/AppointmentsController';
 import CreateAppointmentService from '../services/CreateAppointmentService';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated'; // middleware de validação de autenticação
+
 const appointmentsRouter = Router();
+
+appointmentsRouter.use(ensureAuthenticated); // para que todas as rotas usem a validação de autenticação
 
 // middlewares
 
