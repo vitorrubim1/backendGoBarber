@@ -7,28 +7,25 @@ const sessionsRouter = Router();
 // rota de autenticação
 
 sessionsRouter.post('/', async (request, response) => {
-  try {
-    const { email, password } = request.body; // pra fazer autenticação, é necessário email e senha
+  const { email, password } = request.body; // pra fazer autenticação, é necessário email e senha
 
-    // instancio a classe de autenticação e executo
-    const authenticateUserService = new AuthenticateUserService();
-    const { user, token } = await authenticateUserService.execute({
-      email,
-      password,
-    }); // desacoplei a resposta da classe pra ficar mais semântico e saber oq estou retornando para o frontend
+  // instancio a classe de autenticação e executo
+  const authenticateUserService = new AuthenticateUserService();
+  const { user, token } = await authenticateUserService.execute({
+    email,
+    password,
+  }); // desacoplei a resposta da classe pra ficar mais semântico e saber oq estou retornando para o frontend
 
-    const sessionsWithoutPassword = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-    };
+  const sessionsWithoutPassword = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    created_at: user.created_at,
+    updated_at: user.updated_at,
+  };
 
-    return response.json({ sessionsWithoutPassword, token });
-  } catch (err) {
-    return response.status(err.statusCode).json({ error: err.message });
-  }
+  return response.json({ sessionsWithoutPassword, token });
+  return response.status(err.statusCode).json({ error: err.message });
 });
 
 export default sessionsRouter;
