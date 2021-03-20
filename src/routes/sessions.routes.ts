@@ -16,7 +16,8 @@ sessionsRouter.post('/', async (request, response) => {
     password,
   }); // desacoplei a resposta da classe pra ficar mais semântico e saber oq estou retornando para o frontend
 
-  const sessionsWithoutPassword = {
+  const userData = {
+    // retornando o user sem a senha
     id: user.id,
     name: user.name,
     email: user.email,
@@ -24,8 +25,7 @@ sessionsRouter.post('/', async (request, response) => {
     updated_at: user.updated_at,
   };
 
-  return response.json({ sessionsWithoutPassword, token });
-  return response.status(err.statusCode).json({ error: err.message });
+  return response.json({ userData, token });
 });
 
 export default sessionsRouter;
