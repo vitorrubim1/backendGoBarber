@@ -1,6 +1,8 @@
 import { getRepository } from 'typeorm'; // getRepository: para ter os metódos de criação, update, delete disponivel
 import { hash } from 'bcryptjs';
 
+import AppError from '../errors/AppError'; // classe de erros
+
 import User from '../models/User';
 
 interface Request {
@@ -21,7 +23,7 @@ class CreateUserService {
     });
 
     if (checkUserExist) {
-      throw new Error('Email address already used another user.');
+      throw new AppError('Email address already used another user.');
     }
 
     const hashedPassword = await hash(password, 8); // criptografando a senha

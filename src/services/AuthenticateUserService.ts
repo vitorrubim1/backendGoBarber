@@ -3,6 +3,7 @@ import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken'; // sign: pra criar um token/ assinar
 
 import authConfig from '../config/auth'; // configurações do token
+import AppError from '../errors/AppError'; // classe de erros
 
 import User from '../models/User'; // representa uma tabela no banco
 
@@ -30,7 +31,7 @@ class AuthenticateUserService {
     const user = await usersRepository.findOne({ where: { email } }); // tentando buscar algum usuário pelo email do parametro
 
     if (!user) {
-      throw new Error('Incorrect email/password combination'); // descrevo que pode ser alguns dos dois por segurança
+      throw new AppError('Incorrect email/password combination', 401); // descrevo que pode ser alguns dos dois por segurança
     }
 
     /*
@@ -43,7 +44,7 @@ class AuthenticateUserService {
     const passwordMatched = await compare(password, user.password); // retorna booleano
 
     if (!passwordMatched) {
-      throw new Error('Incorrect email/password combination');
+      throw new AppError('Incorrect email/password combination', 401);
     }
 
     // Chegou até aqui, usuário autenticado

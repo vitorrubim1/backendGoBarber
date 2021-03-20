@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
 import authConfig from '../config/auth'; // configurações do token
+import AppError from '../errors/AppError'; // classe de erros
 
 // middleware responsável por verificar se o usuário está realmente autenticado
 
@@ -24,7 +25,7 @@ export default function ensureAuthenticated(
   const authHeader = request.headers.authorization; // token que vem do header da requisição
 
   if (!authHeader) {
-    throw new Error('JWT token is missing');
+    throw new AppError('JWT token is missing', 401);
   }
 
   /*
@@ -46,6 +47,6 @@ export default function ensureAuthenticated(
 
     return next(); // permitir que o usuário continue usando a aplicação, caso o token esteja válido
   } catch (error) {
-    throw new Error('Invalid JWT token');
+    throw new AppError('Invalid JWT token', 401);
   }
 }

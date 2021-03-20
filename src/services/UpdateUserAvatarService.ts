@@ -3,6 +3,7 @@ import path from 'path'; // para lidar com caminhos dentro da aplicação, de fo
 import fs from 'fs';
 
 import uploadConfig from '../config/upload'; // arquivo de configuração de upload de imagem
+import AppError from '../errors/AppError'; // classe de erros
 
 import User from '../models/User'; // representa a tabela de user
 
@@ -24,7 +25,7 @@ class UpdateUserAvatarService {
     const user = await usersRepository.findOne(user_id); // instância da entidade da tabela de usuário que tenha mesmo id que eu passo por parâmetro
 
     if (!user) {
-      throw new Error('Only authenticated users can change avatar');
+      throw new AppError('Only authenticated users can change avatar', 401);
     }
 
     // caso o usuário exista ⬇️
