@@ -1,5 +1,6 @@
 import 'reflect-metadata'; // typeorm exige por conta que utilizamos decorators
 import express, { Request, Response, NextFunction } from 'express';
+import cors from 'cors';
 import 'express-async-errors'; // pra tratar erros assíncronos que vem das rotas
 
 import uploadConfig from './config/upload'; // arquivo de configuração de upload de imagem
@@ -10,6 +11,7 @@ import './database';
 
 const app = express();
 
+app.use(cors()); // habilitando cors, para web requisitar
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.directory)); // servindo pra aplicação de forma estática o arquivo físico, as imagens
 app.use(routes); // usando o arquivo index de rotas
