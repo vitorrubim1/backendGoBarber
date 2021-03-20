@@ -1,8 +1,14 @@
 import { Router } from 'express';
+import multer from 'multer'; // pra lidar com upload de imagem
+
+import uploadConfig from '../config/upload';
 
 import CreateUserService from '../services/CreateUserService';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated'; // middleware de validação de autenticação
+
 const usersRouter = Router();
+const upload = multer(uploadConfig); // instanciando o multer e passando as configurações de upload
 
 // middlewares
 
@@ -26,5 +32,14 @@ usersRouter.post('/', async (request, response) => {
     return response.status(400).json({ error: err.message });
   }
 });
+
+usersRouter.patch(
+  '/avatar',
+  ensureAuthenticated,
+  upload.single('avatar'), // middleware responsável por criar uma única imagem, que recebe o parâmetro do "input"
+  async (request, response) => {
+    return response.json({ ok: true });
+  },
+); // patch: pq quero atualizar uma única informação do usuário
 
 export default usersRouter;

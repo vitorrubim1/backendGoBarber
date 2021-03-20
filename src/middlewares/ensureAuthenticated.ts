@@ -44,8 +44,6 @@ export default function ensureAuthenticated(
       id: sub, // dizendo que o id, é igual o sub que vem do token
     };
 
-    console.log(decoded);
-
     return next(); // permitir que o usuário continue usando a aplicação, caso o token esteja válido
   } catch (error) {
     throw new Error('Invalid JWT token');
