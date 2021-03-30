@@ -2,8 +2,8 @@ import { Router } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
 
-import AppointmentsController from '../controllers/AppointmentsController';
-import CreateAppointmentService from '../services/CreateAppointmentService';
+import AppointmentsController from '../../modules/appointments/controllers/AppointmentsController';
+import CreateAppointmentService from '../../modules/appointments/services/CreateAppointmentService';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated'; // middleware de validação de autenticação
 

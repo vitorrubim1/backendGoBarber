@@ -1,9 +1,9 @@
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm'; // getCustomRepository: função pra buscar um controller
 
-import AppError from '../errors/AppError'; // classe de erros
+import AppError from '../../../shared/errors/AppError'; // classe de erros
 
-import Appointment from '../models/Appointment';
+import Appointment from '../entities/Appointment';
 import AppointmentsController from '../controllers/AppointmentsController';
 
 interface RequestDTO {

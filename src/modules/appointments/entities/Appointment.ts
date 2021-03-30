@@ -15,7 +15,7 @@ import {
   JoinColumn: identificação da coluna
 */
 
-import User from './User';
+import User from '../../users/entities/User';
 
 // Model está relacionado com uma tabela do banco de dados
 
