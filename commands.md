@@ -4,9 +4,14 @@
 # Listar todas as imagens/containers criados ou rodando
 $ sudo docker ps -a
 
-# Rodar um container
-$ sudo docker start `id_do_container`
+# Criar um container(database)
+$ sudo docker run --name `nome_container` -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
 
+# Rodar um container
+$ sudo docker start `id_do_container` ou `nome_container`
+
+# Parar todos os container que estão rodando na máquina
+$ sudo docker stop $(docker ps -a -q)
 
 ```
 
