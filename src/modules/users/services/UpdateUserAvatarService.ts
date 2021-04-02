@@ -2,10 +2,10 @@ import { getRepository } from 'typeorm'; // getRepository: para ter os metódos 
 import path from 'path'; // para lidar com caminhos dentro da aplicação, de forma global
 import fs from 'fs';
 
-import uploadConfig from '../config/upload'; // arquivo de configuração de upload de imagem
-import AppError from '../errors/AppError'; // classe de erros
+import uploadConfig from '@config/upload'; // arquivo de configuração de upload de imagem
+import AppError from '@shared/errors/AppError'; // classe de erros
 
-import User from '../models/User'; // representa a tabela de user
+import User from '../infra/typeorm/entities/User'; // representa a tabela de user
 
 /*
 service responsável por adicionar uma imagem a um usuário,

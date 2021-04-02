@@ -15,7 +15,7 @@ import {
   JoinColumn: identificação da coluna
 */
 
-import User from '../../users/entities/User';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 // Model está relacionado com uma tabela do banco de dados
 

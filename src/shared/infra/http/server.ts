@@ -3,11 +3,11 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import 'express-async-errors'; // pra tratar erros assíncronos que vem das rotas
 
-import uploadConfig from './config/upload'; // arquivo de configuração de upload de imagem
-import AppError from './shared/errors/AppError'; // classe de erros
+import uploadConfig from '@config/upload'; // arquivo de configuração de upload de imagem
+import AppError from '@shared/errors/AppError'; // classe de erros
 
-import routes from './shared/routes';
-import './shared/database';
+import routes from './routes';
+import '@shared/infra/typeorm';
 
 const app = express();
 

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
-import authConfig from '../../config/auth'; // configurações do token
-import AppError from '../errors/AppError'; // classe de erros
+import authConfig from '@config/auth'; // configurações do token
+import AppError from '@shared/errors/AppError'; // classe de erros
 
 // middleware responsável por verificar se o usuário está realmente autenticado
 

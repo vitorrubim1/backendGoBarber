@@ -1,9 +1,9 @@
 import { getRepository } from 'typeorm'; // getRepository: para ter os metódos de criação, update, delete disponivel
 import { hash } from 'bcryptjs';
 
-import AppError from '../errors/AppError'; // classe de erros
+import AppError from '@shared/errors/AppError'; // classe de erros
 
-import User from '../models/User';
+import User from '../infra/typeorm/entities/User';
 
 interface Request {
   name: string;

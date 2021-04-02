@@ -2,10 +2,10 @@ import { getRepository } from 'typeorm'; // getRepository: para ter os metódos 
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken'; // sign: pra criar um token/ assinar
 
-import authConfig from '../../../config/auth'; // configurações do token
-import AppError from '../../../shared/errors/AppError'; // classe de erros
+import authConfig from '@config/auth'; // configurações do token
+import AppError from '@shared/errors/AppError'; // classe de erros
 
-import User from '../entities/User'; // representa uma tabela no banco
+import User from '../infra/typeorm/entities/User'; // representa uma tabela no banco
 
 /*
  aq estará a regra de autenticação.
