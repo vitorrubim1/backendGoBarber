@@ -31,13 +31,12 @@ class CreateAppointmentService {
       throw new AppError('This appointment is already booked'); // criando um erro, pq não temos acesso ao request, response
     }
 
-    const appointment = appointmentsRepository.create({
+    const appointment = await appointmentsRepository.create({
       // esse metódo só cria a instância do model
       provider_id,
       date: appointmentDate,
     }); // chamando o metódo de criação e passando os parametros
 
-    await appointmentsRepository.save(appointment); // salvando no banco de dados
 
     return appointment;
   }
