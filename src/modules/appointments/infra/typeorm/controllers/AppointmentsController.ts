@@ -1,20 +1,25 @@
 import { EntityRepository, Repository } from 'typeorm';
 
-import Appointment from '../infra/typeorm/entities/Appointment';
+import IAppointmentController from '../controllers/IAppointmentController'; // interface responsável pelos métodos de retorno
+
+import Appointment from '../entities/Appointment';
 
 // DTO: Data Transfer Object
 
 // arquivo responsável por criar, armazenar, ler, editar
 
 @EntityRepository(Appointment)
-class AppointmentsRepository extends Repository<Appointment> {
+class AppointmentsRepository
+  extends Repository<Appointment>
+  implements IAppointmentController {
   /*
    extendendo Repository que possui todos metódos pronto, ex: (create, all, delete, update).
-   <Appointment>: tipagem da classe, que é o model
+   <Appointment>: tipagem da classe, que é o model e a representação da tabela do bd
+   implements: que será os métodos que esse arquivo deverá retornar
   */
 
   // METÓDO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA
-  public async findByDate(date: Date): Promise<Appointment | null> {
+  public async findByDate(date: Date): Promise<Appointment | undefined> {
     // Promise<>: pq a função é assincrona
     // caso encontre na mesma data retorna o próprio Appointment, caso não retorna null
 
@@ -22,7 +27,7 @@ class AppointmentsRepository extends Repository<Appointment> {
       where: { date }, // encontrar um agendamento que a data que eu recebo seja igual a alguma data no bd
     });
 
-    return findAppointment || null; // se não encontrar por padrão vem undefined, mas eu quero q seja null
+    return findAppointment || undefined; // se não encontrar por padrão vem undefined, mas eu quero q seja null
   }
 }
 

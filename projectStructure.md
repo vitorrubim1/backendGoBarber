@@ -38,3 +38,11 @@ Pasta relacionada com a base de dados.
 ## Pasta **http**
 
 A pasta **infra** dentro de **src** > **shared** > **infra**, será arquivos que se comunicam com o cliente final através de http
+
+## Pastas **controllers**
+
+As pastas **controller** dentro dos **modules** > **infra** > **typeorm**, são "controllers" que representam o typeorm em si, se um dia mudar de sql pra nosql por exemplo, a alteração virá somente nesse arquivo e não terei que mudar regras dentro da aplicação, como métodos que já foram definidos
+
+## Pasta **controller** da raiz do infra
+
+Somente terá uma interface que diz quais será os métodos que não poderão ser diferente, independente do typeorm ou banco de dados que tiver usando.

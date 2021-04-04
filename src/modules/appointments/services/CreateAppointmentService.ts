@@ -4,7 +4,7 @@ import { getCustomRepository } from 'typeorm'; // getCustomRepository: função 
 import AppError from '@shared/errors/AppError'; // classe de erros
 
 import Appointment from '../infra/typeorm/entities/Appointment';
-import AppointmentsController from '../controllers/AppointmentsController';
+import AppointmentsController from '../infra/typeorm/controllers/AppointmentsController';
 
 interface RequestDTO {
   provider_id: string;
