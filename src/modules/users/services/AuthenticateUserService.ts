@@ -1,4 +1,3 @@
-import { getRepository } from 'typeorm'; // getRepository: para ter os metódos de criação, update, delete disponivel
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken'; // sign: pra criar um token/ assinar
 
@@ -6,6 +5,7 @@ import authConfig from '@config/auth'; // configurações do token
 import AppError from '@shared/errors/AppError'; // classe de erros
 
 import User from '../infra/typeorm/entities/User'; // representa uma tabela no banco
+import IUsersController from '../controllers/IUsersController';
 
 /*
  aq estará a regra de autenticação.
@@ -13,22 +13,22 @@ import User from '../infra/typeorm/entities/User'; // representa uma tabela no b
  e caso seja, gerar um token jwt
 */
 
-interface Request {
+interface IRequest {
   email: string;
   password: string;
 }
 
-interface Response {
+interface IResponse {
   // retorno, caso a autenticação dê certo
   user: User;
   token: string;
 }
 
 class AuthenticateUserService {
-  public async execute({ email, password }: Request): Promise<Response> {
-    const usersRepository = getRepository(User); // pra ter os metodos disponiveis, findOne, delete, create...
+  constructor(private usersRepository: IUsersController) {}
 
-    const user = await usersRepository.findOne({ where: { email } }); // tentando buscar algum usuário pelo email do parametro
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
+    const user = await this.usersRepository.findByEmail(email); // tentando buscar algum usuário pelo email do parametro
 
     if (!user) {
       throw new AppError('Incorrect email/password combination', 401); // descrevo que pode ser alguns dos dois por segurança

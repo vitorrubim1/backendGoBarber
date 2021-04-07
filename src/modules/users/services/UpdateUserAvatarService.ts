@@ -1,4 +1,3 @@
-import { getRepository } from 'typeorm'; // getRepository: para ter os metódos de criação, update, delete disponivel
 import path from 'path'; // para lidar com caminhos dentro da aplicação, de forma global
 import fs from 'fs';
 
@@ -6,6 +5,7 @@ import uploadConfig from '@config/upload'; // arquivo de configuração de uploa
 import AppError from '@shared/errors/AppError'; // classe de erros
 
 import User from '../infra/typeorm/entities/User'; // representa a tabela de user
+import IUsersController from '../controllers/IUsersController';
 
 /*
 service responsável por adicionar uma imagem a um usuário,
@@ -13,16 +13,16 @@ por apagar uma imagem antiga caso o usuário esteja fazendo um update
 somente alterar caso o usuário que esteja autenticado exista
 */
 
-interface Request {
+interface IRequest {
   user_id: string;
   avatarFilename: string;
 }
 
 class UpdateUserAvatarService {
-  public async execute({ user_id, avatarFilename }: Request): Promise<User> {
-    const usersRepository = getRepository(User); // pra ter os métodos disponíveis
+  constructor(private usersRepository: IUsersController) {}
 
-    const user = await usersRepository.findOne(user_id); // instância da entidade da tabela de usuário que tenha mesmo id que eu passo por parâmetro
+  public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
+    const user = await this.usersRepository.findById(user_id); // instância da entidade da tabela de usuário que tenha mesmo id que eu passo por parâmetro
 
     if (!user) {
       throw new AppError('Only authenticated users can change avatar', 401);
@@ -41,7 +41,7 @@ class UpdateUserAvatarService {
     }
 
     user.avatar = avatarFilename; // dizendo que o avatar do usuário, é o avatar do parâmetro
-    await usersRepository.save(user); // atualizando o usuário caso exista, ou então criando caso não exista
+    await this.usersRepository.save(user); // atualizando o usuário caso exista, ou então criando caso não exista
 
     return user; // retornando o user
   }

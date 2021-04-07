@@ -7,7 +7,6 @@ import CreateAppointmentService from '@modules/appointments/services/CreateAppoi
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated'; // middleware de validação de autenticação
 
 const appointmentsRouter = Router();
-const appointmentsController = new AppointmentsController(); // instanciando
 
 appointmentsRouter.use(ensureAuthenticated); // para que todas as rotas usem a validação de autenticação
 
@@ -24,6 +23,7 @@ appointmentsRouter.post('/', async (request, response) => {
 
   const parsedDate = parseISO(date); // transforma de string em data
 
+  const appointmentsController = new AppointmentsController(); // instanciando
   const createAppointment = new CreateAppointmentService(
     appointmentsController,
   );

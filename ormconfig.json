@@ -7,12 +7,10 @@
   "username": "postgres",
   "password": "docker",
   "database": "gostack_gobarber",
-  "entities": [
-    "./src/models/*.ts"
-  ],
-  "migrations": ["./src/database/migrations/*.ts"],
+  "entities": ["./src/modules/**/infra/typeorm/entities/*.ts"],
+  "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
   "cli": {
     "_comment": "configurações para a interface de linha de comando do typeorm",
-    "migrationsDir": "./src/database/migrations"
+    "migrationsDir": "./src/shared/infra/typeorm/migrations"
   }
 }

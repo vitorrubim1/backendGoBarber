@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import UsersController from '@modules/users/infra/typeorm/controller/UsersController';
 import AuthenticateUserService from '@modules/users/services/AuthenticateUserService';
 
 const sessionsRouter = Router();
@@ -10,7 +11,9 @@ sessionsRouter.post('/', async (request, response) => {
   const { email, password } = request.body; // pra fazer autenticação, é necessário email e senha
 
   // instancio a classe de autenticação e executo
-  const authenticateUserService = new AuthenticateUserService();
+  const usersController = new UsersController();
+  const authenticateUserService = new AuthenticateUserService(usersController);
+
   const { user, token } = await authenticateUserService.execute({
     email,
     password,
