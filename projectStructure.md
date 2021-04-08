@@ -20,7 +20,7 @@ A pasta **modules** dentro de **src**, será responsável por ter os módulos da
 Assim reduzindo a quantidade de arquivo que outras pastas teriam, sem ter ligação como o módulo em si.
 Levando essa responsabilidade para dentro do repositório responsável,
 ex: _Pasta Appointments, terá os services(que são os arquivos responsáveis pela regra de negócio),
-os controllers e as entities(que seria o "model")._
+os repository e as entities(que seria o "model")._
 
 ## Pasta **shared**
 
@@ -43,10 +43,10 @@ Pasta relacionada com a base de dados.
 
 A pasta **infra** dentro de **src** > **shared** > **infra**, será arquivos que se comunicam com o cliente final através de http
 
-## Pastas **controllers**
+## Pastas **repository**
 
-As pastas **controller** dentro dos **modules** > **infra** > **typeorm**, são "controllers" que representam o typeorm em si, se um dia mudar de sql pra nosql por exemplo, a alteração virá somente nesse arquivo e não terei que mudar regras dentro da aplicação, como métodos que já foram definidos
+As pastas **repository** dentro dos **modules** > **infra** > **typeorm**, são "repository" que representam o typeorm em si, se um dia mudar de sql pra nosql por exemplo, a alteração virá somente nesse arquivo e não terei que mudar regras dentro da aplicação, como métodos que já foram definidos
 
-## Pasta **controller** da raiz do infra
+## Pasta **repository** da raiz do infra
 
 Somente terá uma interface que diz quais será os métodos que não poderão ser diferente, independente do typeorm ou banco de dados que tiver usando.

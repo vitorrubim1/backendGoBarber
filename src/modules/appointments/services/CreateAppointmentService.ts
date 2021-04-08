@@ -3,7 +3,7 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'; // classe de erros
 
-import IAppointmentController from '../controllers/IAppointmentController'; // interface com métodos não dependentes do typeorm
+import IAppointmentRepository from '../repository/IAppointmentRepository'; // interface com métodos não dependentes do typeorm
 
 import Appointment from '../infra/typeorm/entities/Appointment';
 
@@ -17,12 +17,12 @@ class CreateAppointmentService {
   // SOLID: D: DEPENDENCY INVERSION
   /*
   basicamente, inverteremos as obrigações, a rota que for utilizar este service precisará passar o repositório nos parâmetros,
-  assim tendo que tipar esse repositório com a interface IAppointmentController criada para substituir os métodos do typeorm
+  assim tendo que tipar esse repositório com a interface IAppointmentRepository criada para substituir os métodos do typeorm
   */
 
   constructor(
-    @inject('AppointmentController') // decorator, injetando o controller de appointment
-    private appointmentsRepository: IAppointmentController,
+    @inject('IAppointmentRepository') // decorator, injetando o repository de appointment
+    private appointmentsRepository: IAppointmentRepository,
   ) {}
 
   // executando a criação de um novo agendamento. : Appointment = oq preciso retornar
@@ -33,7 +33,7 @@ class CreateAppointmentService {
 
     const findAppointmentsInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
-    ); // passando pro metodo dentro do controller, a data formatada
+    ); // passando pro metodo dentro do repository, a data formatada
 
     // ver se existe um agendemento com o mesmo horário
     if (findAppointmentsInSameDate) {

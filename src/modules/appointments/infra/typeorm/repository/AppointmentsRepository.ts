@@ -1,6 +1,6 @@
 import { getRepository, Repository } from 'typeorm';
 
-import IAppointmentController from '@modules/appointments/controllers/IAppointmentController'; // interface responsável pelos métodos de retorno
+import IAppointmentRepository from '@modules/appointments/repository/IAppointmentRepository'; // interface responsável pelos métodos de retorno
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO'; // métodos da aplicação
 
 import Appointment from '../entities/Appointment';
@@ -11,7 +11,7 @@ import Appointment from '../entities/Appointment';
 
 class AppointmentsRepository
   extends Repository<Appointment>
-  implements IAppointmentController {
+  implements IAppointmentRepository {
   /*
    <Appointment>: tipagem da classe, que é o model e a representação da tabela do bd
    implements: que será os métodos que esse arquivo deverá retornar
@@ -26,7 +26,7 @@ class AppointmentsRepository
 
   // MÉTODO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA
   public async findByDate(date: Date): Promise<Appointment | undefined> {
-    // Promise<>: pq a função é assincrona
+    // Promise<>: pq a função é assíncrona
     // caso encontre na mesma data retorna o próprio Appointment, caso não retorna null
 
     const findAppointment = await this.ormRepository.findOne({

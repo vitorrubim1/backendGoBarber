@@ -2,7 +2,7 @@ import { hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'; // classe de erros
-import IUsersController from '../controllers/IUsersController';
+import IUsersRepository from '../repository/IUsersRepository';
 
 import User from '../infra/typeorm/entities/User';
 
@@ -15,8 +15,8 @@ interface IRequest {
 injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class CreateUserService {
   constructor(
-    @inject('UsersController') // decorator, injetando o controller de appointment
-    private usersRepository: IUsersController,
+    @inject('UsersRepository') // decorator, injetando o repository de appointment
+    private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({ email, name, password }: IRequest): Promise<User> {

@@ -1,13 +1,13 @@
 import { getRepository, Repository } from 'typeorm';
 
-import IUserController from '@modules/users/controllers/IUsersController'; // interface responsável pelos métodos de retorno
+import IUsersRepository from '@modules/users/repository/IUsersRepository'; // interface responsável pelos métodos de retorno
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO'; // métodos da aplicação
 
 import User from '../entities/User';
 
 // arquivo responsável por criar, armazenar, ler, editar
 
-class UsersRepository extends Repository<User> implements IUserController {
+class UsersRepository extends Repository<User> implements IUsersRepository {
   /*
    <User>: tipagem da classe, que é o model e a representação da tabela do bd
    implements: que será os métodos que esse arquivo deverá retornar

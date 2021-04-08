@@ -1,17 +1,17 @@
 import { container } from 'tsyringe';
 
-import IAppointmentController from '@modules/appointments/controllers/IAppointmentController';
-import AppointmentsController from '@modules/appointments/infra/typeorm/controllers/AppointmentsController';
+import IAppointmentRepository from '@modules/appointments/repository/IAppointmentRepository';
+import AppointmentsRepository from '@modules/appointments/infra/typeorm/repository/AppointmentsRepository';
 
-import IUsersController from '@modules/users/controllers/IUsersController';
-import UsersController from '@modules/users/infra/typeorm/controllers/UsersController';
+import IUsersRepository from '@modules/users/repository/IUsersRepository';
+import UsersRepository from '@modules/users/infra/typeorm/repository/UsersRepository';
 
-container.registerSingleton<IAppointmentController>(
-  'AppointmentsController', // identificação do "registro"
-  AppointmentsController, // e oq vai retornar, o generic obriga que tenha o formato da interface
+container.registerSingleton<IAppointmentRepository>(
+  'AppointmentsRepository', // identificação do "registro"
+  AppointmentsRepository, // e oq vai retornar, o generic obriga que tenha o formato da interface
 );
 
-container.registerSingleton<IUsersController>(
-  'UsersController', // identificação do "registro"
-  UsersController, // e oq vai retornar, o generic obriga que tenha o formato da interface
+container.registerSingleton<IUsersRepository>(
+  'UsersRepository', // identificação do "registro"
+  UsersRepository, // e oq vai retornar, o generic obriga que tenha o formato da interface
 );

@@ -6,7 +6,7 @@ import uploadConfig from '@config/upload'; // arquivo de configuração de uploa
 import AppError from '@shared/errors/AppError'; // classe de erros
 
 import User from '../infra/typeorm/entities/User'; // representa a tabela de user
-import IUsersController from '../controllers/IUsersController';
+import IUsersRepository from '../repository/IUsersRepository';
 
 /*
 service responsável por adicionar uma imagem a um usuário,
@@ -22,8 +22,8 @@ interface IRequest {
 injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class UpdateUserAvatarService {
   constructor(
-    @inject('UsersController') // decorator, injetando o controller de appointment
-    private usersRepository: IUsersController,
+    @inject('UsersRepository') // decorator, injetando o repository de appointment
+    private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {

@@ -13,7 +13,7 @@ appointmentsRouter.use(ensureAuthenticated); // para que todas as rotas usem a v
 // middlewares
 
 // appointmentsRouter.get('/', async (request, response) => {
-//   const appointments = await appointmentsController.find(); // metódo de listagem dentro do controller
+//   const appointments = await appointmentsController.find(); // método de listagem dentro do repository
 
 //   return response.json(appointments);
 // });

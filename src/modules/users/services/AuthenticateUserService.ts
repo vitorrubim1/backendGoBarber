@@ -6,7 +6,7 @@ import authConfig from '@config/auth'; // configurações do token
 import AppError from '@shared/errors/AppError'; // classe de erros
 
 import User from '../infra/typeorm/entities/User'; // representa uma tabela no banco
-import IUsersController from '../controllers/IUsersController';
+import IUsersRepository from '../repository/IUsersRepository';
 
 /*
  aq estará a regra de autenticação.
@@ -28,8 +28,8 @@ interface IResponse {
 injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class AuthenticateUserService {
   constructor(
-    @inject('UsersController') // decorator, injetando o controller de appointment
-    private usersRepository: IUsersController,
+    @inject('UsersRepository') // decorator, injetando o repository de appointment
+    private usersRepository: IUsersRepository,
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
