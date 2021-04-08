@@ -1,9 +1,9 @@
 import { Router } from 'express';
+import { container } from 'tsyringe';
 import multer from 'multer'; // pra lidar com upload de imagem
 
 import uploadConfig from '@config/upload';
 
-import UsersController from '@modules/users/infra/typeorm/controller/UsersController';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 
@@ -17,8 +17,7 @@ const upload = multer(uploadConfig); // instanciando o multer e passando as conf
 usersRouter.post('/', async (request, response) => {
   const { name, email, password } = request.body; // dados do formulário
 
-  const usersController = new UsersController();
-  const createUser = new CreateUserService(usersController); // instânciando o service
+  const createUser = container.resolve(CreateUserService); // toda vez que for utilizar um service instanciarei dessa forma
 
   const user = await createUser.execute({ name, email, password }); // executando do service o metódo de criação, e passando os parametros
 
@@ -39,8 +38,7 @@ usersRouter.patch(
   ensureAuthenticated,
   upload.single('avatar'), // middleware responsável por criar uma única imagem, que recebe o parâmetro do "input"
   async (request, response) => {
-    const usersController = new UsersController();
-    const updateUserAvatar = new UpdateUserAvatarService(usersController); // instânciando a classe
+    const updateUserAvatar = container.resolve(UpdateUserAvatarService); // toda vez que for utilizar um service instanciarei dessa forma
 
     const user = await updateUserAvatar.execute({
       // passando os parâmetros que a classe espera

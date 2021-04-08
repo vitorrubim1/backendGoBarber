@@ -8,6 +8,7 @@ import AppError from '@shared/errors/AppError'; // classe de erros
 
 import routes from './routes';
 import '@shared/infra/typeorm';
+import '@shared/container'; // injeção de dependência
 
 const app = express();
 

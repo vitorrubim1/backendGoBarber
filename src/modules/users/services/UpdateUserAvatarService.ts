@@ -1,5 +1,6 @@
 import path from 'path'; // para lidar com caminhos dentro da aplicação, de forma global
 import fs from 'fs';
+import { inject, injectable } from 'tsyringe';
 
 import uploadConfig from '@config/upload'; // arquivo de configuração de upload de imagem
 import AppError from '@shared/errors/AppError'; // classe de erros
@@ -18,8 +19,12 @@ interface IRequest {
   avatarFilename: string;
 }
 
+injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class UpdateUserAvatarService {
-  constructor(private usersRepository: IUsersController) {}
+  constructor(
+    @inject('UsersController') // decorator, injetando o controller de appointment
+    private usersRepository: IUsersController,
+  ) {}
 
   public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id); // instância da entidade da tabela de usuário que tenha mesmo id que eu passo por parâmetro

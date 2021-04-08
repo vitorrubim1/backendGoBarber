@@ -27,6 +27,10 @@ os controllers e as entities(que seria o "model")._
 A pasta **shared** dentro de **src**, tem como função compartilhar informações.
 Informações que os dois módulos(User, Appointments) utilizam;
 
+## Pasta **container**
+
+A pasta **container** dentro de **shared**, é responsável por controlar as dependência da aplicação, para não ter que ficar criando um constructor e passando qual é o repositório pra qual rota
+
 ## Pasta **infra**
 
 A pasta **infra** dentro de **src** > **shared**, e tbm no **modules**, será responsável por armazenar informações de vários pacotes/bibliotecas (coisas que podem mudar, tipo o banco de dados)

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
+import { container } from 'tsyringe';
 
-import AppointmentsController from '@modules/appointments/infra/typeorm/controllers/AppointmentsController';
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
 
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated'; // middleware de validação de autenticação
@@ -23,10 +23,7 @@ appointmentsRouter.post('/', async (request, response) => {
 
   const parsedDate = parseISO(date); // transforma de string em data
 
-  const appointmentsController = new AppointmentsController(); // instanciando
-  const createAppointment = new CreateAppointmentService(
-    appointmentsController,
-  );
+  const createAppointment = container.resolve(CreateAppointmentService); // toda vez que for utilizar um service instanciarei dessa forma
 
   const appointment = await createAppointment.execute({
     date: parsedDate,

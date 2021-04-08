@@ -1,4 +1,5 @@
 import { hash } from 'bcryptjs';
+import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'; // classe de erros
 import IUsersController from '../controllers/IUsersController';
@@ -11,8 +12,12 @@ interface IRequest {
   password: string;
 }
 
+injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class CreateUserService {
-  constructor(private usersRepository: IUsersController) {}
+  constructor(
+    @inject('UsersController') // decorator, injetando o controller de appointment
+    private usersRepository: IUsersController,
+  ) {}
 
   public async execute({ email, name, password }: IRequest): Promise<User> {
     // Promise<User>: metódo assíncrono que vai retornar um usuário

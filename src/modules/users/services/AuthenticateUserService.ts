@@ -1,5 +1,6 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken'; // sign: pra criar um token/ assinar
+import { inject, injectable } from 'tsyringe';
 
 import authConfig from '@config/auth'; // configurações do token
 import AppError from '@shared/errors/AppError'; // classe de erros
@@ -24,8 +25,12 @@ interface IResponse {
   token: string;
 }
 
+injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class AuthenticateUserService {
-  constructor(private usersRepository: IUsersController) {}
+  constructor(
+    @inject('UsersController') // decorator, injetando o controller de appointment
+    private usersRepository: IUsersController,
+  ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email); // tentando buscar algum usuário pelo email do parametro

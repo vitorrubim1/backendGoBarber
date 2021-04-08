@@ -1,4 +1,5 @@
 import { startOfHour } from 'date-fns';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'; // classe de erros
 
@@ -11,6 +12,7 @@ interface IRequest {
   date: Date;
 }
 
+injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class CreateAppointmentService {
   // SOLID: D: DEPENDENCY INVERSION
   /*
@@ -18,7 +20,10 @@ class CreateAppointmentService {
   assim tendo que tipar esse repositório com a interface IAppointmentController criada para substituir os métodos do typeorm
   */
 
-  constructor(private appointmentsRepository: IAppointmentController) {}
+  constructor(
+    @inject('AppointmentController') // decorator, injetando o controller de appointment
+    private appointmentsRepository: IAppointmentController,
+  ) {}
 
   // executando a criação de um novo agendamento. : Appointment = oq preciso retornar
   public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
