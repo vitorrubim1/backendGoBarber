@@ -1,63 +1,27 @@
 import { Router } from 'express';
-import { container } from 'tsyringe';
 import multer from 'multer'; // pra lidar com upload de imagem
 
 import uploadConfig from '@config/upload';
 
-import CreateUserService from '@modules/users/services/CreateUserService';
-import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
-
 import ensureAuthenticated from '../middlewares/ensureAuthenticated'; // middleware de validação de autenticação
 
+import UsersController from '../controller/UsersController';
+import UserAvatarController from '../controller/UserAvatarController';
+
 const usersRouter = Router();
+const usersController = new UsersController(); // desacoplo, pra conseguir usar os métodos
+const userAvatarController = new UserAvatarController(); // desacoplo, pra conseguir usa o método de atualizar avatar, em controller diferente pq é relacionado somente ao avatar, e não poderia ser dentro do update do user pq, o método update já é pro user em si, senha, email ...
 const upload = multer(uploadConfig); // instanciando o multer e passando as configurações de upload
 
 // middlewares
 
-usersRouter.post('/', async (request, response) => {
-  const { name, email, password } = request.body; // dados do formulário
-
-  const createUser = container.resolve(CreateUserService); // toda vez que for utilizar um service instanciarei dessa forma
-
-  const user = await createUser.execute({ name, email, password }); // executando do service o metódo de criação, e passando os parametros
-
-  const userData = {
-    // retornando o user sem a senha
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    created_at: user.created_at,
-    updated_at: user.updated_at,
-  };
-
-  return response.json(userData);
-});
+usersRouter.post('/', usersController.create);
 
 usersRouter.patch(
   '/avatar',
   ensureAuthenticated,
   upload.single('avatar'), // middleware responsável por criar uma única imagem, que recebe o parâmetro do "input"
-  async (request, response) => {
-    const updateUserAvatar = container.resolve(UpdateUserAvatarService); // toda vez que for utilizar um service instanciarei dessa forma
-
-    const user = await updateUserAvatar.execute({
-      // passando os parâmetros que a classe espera
-      user_id: request.user.id, // request.user.id: vem da declaração de tipos
-      avatarFilename: request.file.filename,
-    });
-
-    const userData = {
-      // retornando o user sem a senha
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      avatar: user.avatar,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-    };
-
-    return response.json(userData);
-  },
+  userAvatarController.update,
 ); // patch: pq quero atualizar uma única informação do usuário
 
 export default usersRouter;
