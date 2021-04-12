@@ -8,9 +8,8 @@ export default class SessionsController {
     const { email, password } = request.body; // pra fazer autenticação, é necessário email e senha
 
     // instancio a classe de autenticação e executo
-    const authenticateUserService = container.resolve(AuthenticateUserService); // toda vez que for utilizar um service instanciarei dessa forma
-
-    const { user, token } = await authenticateUserService.execute({
+    const authenticateUser = container.resolve(AuthenticateUserService); // toda vez que for utilizar um service instanciarei dessa forma
+    const { user, token } = await authenticateUser.execute({
       email,
       password,
     }); // desacoplei a resposta da classe pra ficar mais semântico e saber oq estou retornando para o frontend

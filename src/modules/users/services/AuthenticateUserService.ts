@@ -25,7 +25,7 @@ interface IResponse {
   token: string;
 }
 
-injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class AuthenticateUserService {
   constructor(
     @inject('UsersRepository') // decorator, injetando o repository de appointment
@@ -60,9 +60,9 @@ class AuthenticateUserService {
       subject: user.id,
       expiresIn,
     }); /*
-      primeiro parametro: payload (dá pra descriptografar). Fica dentro do token, mas não fica seguro
-      segundo parametro: chave secreta, que só a aplicação possa entender, só gerar qualquer coisa no md5 online
-      terceiro parametro: configurações do token, como id e tempo pra expirar o token
+      primeiro parâmetro: payload (dá pra descriptografar). Fica dentro do token, mas não fica seguro
+      segundo parâmetro: chave secreta, que só a aplicação possa entender, só gerar qualquer coisa no md5 online
+      terceiro parâmetro: configurações do token, como id e tempo pra expirar o token
     */
 
     return {

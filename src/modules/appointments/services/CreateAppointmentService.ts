@@ -12,7 +12,7 @@ interface IRequest {
   date: Date;
 }
 
-injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class CreateAppointmentService {
   // SOLID: D: DEPENDENCY INVERSION
   /*
@@ -21,7 +21,7 @@ class CreateAppointmentService {
   */
 
   constructor(
-    @inject('IAppointmentRepository') // decorator, injetando o repository de appointment
+    @inject('AppointmentsRepository') // decorator, injetando o repository de appointment
     private appointmentsRepository: IAppointmentRepository,
   ) {}
 

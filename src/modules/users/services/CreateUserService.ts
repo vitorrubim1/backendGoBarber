@@ -12,7 +12,7 @@ interface IRequest {
   password: string;
 }
 
-injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class CreateUserService {
   constructor(
     @inject('UsersRepository') // decorator, injetando o repository de appointment

@@ -6,7 +6,7 @@ import AppError from '@shared/errors/AppError'; // classe de erros
 
 // middleware responsável por verificar se o usuário está realmente autenticado
 
-interface TokenPayload {
+interface ITokenPayload {
   // informações que vem no token
   iat: number; // quando token foi gerado
   exp: number; // quando irá expirar
@@ -38,7 +38,7 @@ export default function ensureAuthenticated(
   try {
     const decoded = verify(token, authConfig.jwt.secret); // verificando se o token é válido
 
-    const { sub } = decoded as TokenPayload; // forçando a tipagem de uma variável
+    const { sub } = decoded as ITokenPayload; // forçando a tipagem de uma variável
 
     request.user = {
       // redeclarei a tipagem do express e adicionei essa informação de user, pra que todas as rotas tenham acesso ao id do usuário
