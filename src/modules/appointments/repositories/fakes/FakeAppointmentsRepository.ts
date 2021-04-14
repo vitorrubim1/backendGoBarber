@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { isEqual } from 'date-fns';
 
 import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository'; // interface responsável pelos métodos de retorno
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO'; // métodos da aplicação
@@ -18,8 +19,8 @@ class AppointmentsRepository implements IAppointmentRepository {
 
   // MÉTODO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA
   public async findByDate(date: Date): Promise<Appointment | undefined> {
-    const findAppointment = this.appointments.find(
-      appointment => appointment.date === date,
+    const findAppointment = this.appointments.find(appointment =>
+      isEqual(appointment.date, date),
     ); // percorrendo a variável da linha 17 para encontrar um appointment que tenha a mesma data
 
     return findAppointment;
