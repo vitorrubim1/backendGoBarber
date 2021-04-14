@@ -6,7 +6,7 @@ import authConfig from '@config/auth'; // configurações do token
 import AppError from '@shared/errors/AppError'; // classe de erros
 
 import User from '../infra/typeorm/entities/User'; // representa uma tabela no banco
-import IUsersRepository from '../repository/IUsersRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 /*
  aq estará a regra de autenticação.

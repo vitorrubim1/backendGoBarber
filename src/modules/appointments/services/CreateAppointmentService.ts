@@ -3,7 +3,7 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'; // classe de erros
 
-import IAppointmentRepository from '../repository/IAppointmentRepository'; // interface com métodos não dependentes do typeorm
+import IAppointmentRepository from '../repositories/IAppointmentRepository'; // interface com métodos não dependentes do typeorm
 
 import Appointment from '../infra/typeorm/entities/Appointment';
 

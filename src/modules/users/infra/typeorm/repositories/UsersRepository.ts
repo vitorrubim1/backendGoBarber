@@ -1,6 +1,6 @@
 import { getRepository, Repository } from 'typeorm';
 
-import IUsersRepository from '@modules/users/repository/IUsersRepository'; // interface responsável pelos métodos de retorno
+import IUsersRepository from '@modules/users/repositories/IUsersRepository'; // interface responsável pelos métodos de retorno
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO'; // métodos da aplicação
 
 import User from '../entities/User';

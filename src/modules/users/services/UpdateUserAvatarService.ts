@@ -6,7 +6,7 @@ import uploadConfig from '@config/upload'; // arquivo de configuração de uploa
 import AppError from '@shared/errors/AppError'; // classe de erros
 
 import User from '../infra/typeorm/entities/User'; // representa a tabela de user
-import IUsersRepository from '../repository/IUsersRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 /*
 service responsável por adicionar uma imagem a um usuário,

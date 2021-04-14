@@ -2,7 +2,7 @@ import { hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'; // classe de erros
-import IUsersRepository from '../repository/IUsersRepository';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 import User from '../infra/typeorm/entities/User';
 
