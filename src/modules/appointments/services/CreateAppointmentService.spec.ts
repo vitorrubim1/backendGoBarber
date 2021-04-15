@@ -2,7 +2,7 @@
 
 import AppError from '@shared/errors/AppError'; // classe de erros
 
-import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository'; // repositório que representa repositório, só que sem dependência do typeorm e do banco de dados(somente js)
+import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository'; // fakeRepositório que representa o repositório, só que sem dependência do typeorm e do banco de dados(somente js)
 import CreateAppointmentService from './CreateAppointmentService';
 
 // sempre manter a convenção dos nomes dos teste em inglês

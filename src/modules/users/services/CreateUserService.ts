@@ -19,22 +19,22 @@ class CreateUserService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute({ email, name, password }: IRequest): Promise<User> {
+  public async execute({ name, email, password }: IRequest): Promise<User> {
     // Promise<User>: metódo assíncrono que vai retornar um usuário
 
     // checando se já existe algum usuário com o email da request
     const checkUserExist = await this.usersRepository.findByEmail(email);
 
     if (checkUserExist) {
-      throw new AppError('Email address already used another user.');
+      throw new AppError('Email address already used.');
     }
 
     const hashedPassword = await hash(password, 8); // criptografando a senha
 
     // criando a instância do usuário
     const user = await this.usersRepository.create({
-      email,
       name,
+      email,
       password: hashedPassword,
     });
 

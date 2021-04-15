@@ -7,7 +7,7 @@ import User from '../entities/User';
 
 // arquivo responsável por criar, armazenar, ler, editar
 
-class UsersRepository extends Repository<User> implements IUsersRepository {
+class UsersRepository implements IUsersRepository {
   /*
    <User>: tipagem da classe, que é o model e a representação da tabela do bd
    implements: que será os métodos que esse arquivo deverá retornar
@@ -16,7 +16,6 @@ class UsersRepository extends Repository<User> implements IUsersRepository {
   private ormRepository: Repository<User>; // é uma entidade do typeorm, como os métodos de save, delete, update, save ...
 
   constructor() {
-    super();
     this.ormRepository = getRepository(User); // criando e buscando o repositorio de appointment
   }
 
