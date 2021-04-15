@@ -1,4 +1,3 @@
-import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken'; // sign: pra criar um token/ assinar
 import { inject, injectable } from 'tsyringe';
 
@@ -7,6 +6,7 @@ import AppError from '@shared/errors/AppError'; // classe de erros
 
 import User from '../infra/typeorm/entities/User'; // representa uma tabela no banco
 import IUsersRepository from '../repositories/IUsersRepository';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 /*
  aq estará a regra de autenticação.
@@ -30,6 +30,9 @@ class AuthenticateUserService {
   constructor(
     @inject('UsersRepository') // decorator, injetando o repository de appointment
     private usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider, // criptografia e descriptografia de senha
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
@@ -46,7 +49,10 @@ class AuthenticateUserService {
       compare do bcrypt: compara a senha não criptografada com a senha criptografada
     */
 
-    const passwordMatched = await compare(password, user.password); // retorna booleano
+    const passwordMatched = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    ); // retorna booleano
 
     if (!passwordMatched) {
       throw new AppError('Incorrect email/password combination', 401);
