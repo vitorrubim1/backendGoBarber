@@ -1,6 +1,7 @@
 import { container } from 'tsyringe';
 
 import '@modules/users/providers'; // para executar o provider de hash de senha
+import './providers'; // para executar o provider de upload de image(ainda em disco)
 
 import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository';
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';

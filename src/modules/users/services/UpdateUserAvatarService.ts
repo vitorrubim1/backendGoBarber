@@ -1,10 +1,8 @@
-import path from 'path'; // para lidar com caminhos dentro da aplicação, de forma global
-import fs from 'fs';
 import { inject, injectable } from 'tsyringe';
 
-import uploadConfig from '@config/upload'; // arquivo de configuração de upload de imagem
 import AppError from '@shared/errors/AppError'; // classe de erros
 
+import IStorageProvider from '@shared/container/providers/StorageProvider/models/IStorageProvider';
 import User from '../infra/typeorm/entities/User'; // representa a tabela de user
 import IUsersRepository from '../repositories/IUsersRepository';
 
@@ -22,8 +20,11 @@ interface IRequest {
 injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class UpdateUserAvatarService {
   constructor(
-    @inject('UsersRepository') // decorator, injetando o repository de appointment
+    @inject('UsersRepository') // decorator, injetando o repository de users
     private usersRepository: IUsersRepository,
+
+    @inject('StorageProvider') // decorator, injetando o repository de appointment
+    private storageProvider: IStorageProvider,
   ) {}
 
   public async execute({ user_id, avatarFilename }: IRequest): Promise<User> {
@@ -36,16 +37,11 @@ class UpdateUserAvatarService {
     // caso o usuário exista ⬇️
     if (user.avatar) {
       // ainda não atualizamos o avatar, apenas verifico se o user já tem para apagar o avatar anterior
-
-      const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar); // uno dois caminhos com o join, e pego a imagem do user
-      const userAvatarFileExist = await fs.promises.stat(userAvatarFilePath); // torno em uma promise e vejo se o arquivo de avatar do user existe
-
-      if (userAvatarFileExist) {
-        await fs.promises.unlink(userAvatarFilePath); // deleto o arquivo
-      }
+      await this.storageProvider.deleteFile(user.avatar);
     }
+    const fileName = await this.storageProvider.saveFile(avatarFilename); // chamo o método de salvar
 
-    user.avatar = avatarFilename; // dizendo que o avatar do usuário, é o avatar do parâmetro
+    user.avatar = fileName; // dizendo que o avatar do usuário, é o avatar do parâmetro
     await this.usersRepository.save(user); // atualizando o usuário caso exista, ou então criando caso não exista
 
     return user; // retornando o user
