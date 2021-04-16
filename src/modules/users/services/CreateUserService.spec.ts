@@ -32,7 +32,7 @@ describe('CreateUser', () => {
   });
 
   // para rejeitar caso haja dois usuários com mesmo email
-  it('should not be able to create a new user whit same email from another', async () => {
+  it('should not be able to create a new user with same email from another', async () => {
     const fakeUsersRepository = new FakeUsersRepository(); // instancio pq o service abaixo precisa receber o repository por parâmetro, já que esse fake possui os mesmo métodos que é esperado
     const fakeHashProvider = new FakeHashProvider();
 
