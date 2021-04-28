@@ -8,7 +8,7 @@ import User from '../../infra/typeorm/entities/User';
 // arquivo fake, sem nenhuma dependência do typeorm para ajudar nos teste, com métodos somente com javascript
 // vamos criar todos métodos na mão, já que não teremos dependência do bd e nem do typeorm
 
-class UsersRepository implements IUsersRepository {
+class FakeUsersRepository implements IUsersRepository {
   /*
    <User>: tipagem da classe, que é o model e a representação da tabela do bd
    implements: que será os métodos que esse arquivo deverá retornar
@@ -49,4 +49,4 @@ class UsersRepository implements IUsersRepository {
   }
 }
 
-export default UsersRepository;
+export default FakeUsersRepository;

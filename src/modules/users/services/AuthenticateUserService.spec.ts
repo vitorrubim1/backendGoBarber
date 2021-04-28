@@ -54,7 +54,7 @@ describe('AuthenticateUser', () => {
       fakeHashProvider,
     ); // criando o service de criação de um user pq um teste não pode depender de outro teste, então esse aq terá a criação e autenticação
 
-    expect(
+    await expect(
       authenticateUser.execute({
         email: 'test@test.com',
         password: '12345',
@@ -83,7 +83,7 @@ describe('AuthenticateUser', () => {
       password: '12345',
     });
 
-    expect(
+    await expect(
       authenticateUser.execute({
         email: 'test@test.com',
         password: 'wrong-password',

@@ -47,7 +47,7 @@ describe('CreateUser', () => {
       fakeStorageProvider,
     ); // criando o service, e recebendo o repositório fake, pra testes
 
-    expect(
+    await expect(
       updateUserAvatar.execute({
         user_id: 'non-existing-id', // id inexistente pra dar error
         avatarFilename: 'avatar.jpg',
