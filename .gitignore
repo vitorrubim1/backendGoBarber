@@ -5,4 +5,6 @@
 #tmp/* : ignorando todos arquivos da pasta tmp. !tmp/.gitkeep : menos o .gitkeep
 tmp/*
 !tmp/.gitkeep
-covarege
+/coverage
+coverage
+
