@@ -9,8 +9,8 @@ import AppointmentsRepository from '@modules/appointments/infra/typeorm/reposito
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
-// import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
-// import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
+import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
+import UserTokenRepository from '@modules/users/infra/typeorm/repositories/UserTokenRepository';
 
 // toda vez que uma classe injetar uma dependência 'AppointmentsRepository', como essa daqui foi registrada(registerSingleton) retornará uma instância da classe IAppointmentRepository;
 container.registerSingleton<IAppointmentRepository>(
@@ -18,8 +18,12 @@ container.registerSingleton<IAppointmentRepository>(
   AppointmentsRepository, // e oq vai retornar, o generic obriga que tenha o formato da interface
 );
 
-// toda vez que uma classe injetar uma dependência 'UsersRepository', como essa daqui foi registrada(registerSingleton) retornará uma instância da classe UsersRepository;
 container.registerSingleton<IUsersRepository>(
-  'UsersRepository', // identificação do "registro"
-  UsersRepository, // e oq vai retornar, o generic obriga que tenha o formato da interface
+  'UsersRepository',
+  UsersRepository,
+);
+
+container.registerSingleton<IUserTokensRepository>(
+  'UserTokenRepository',
+  UserTokenRepository,
 );
