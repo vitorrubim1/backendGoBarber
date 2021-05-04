@@ -6,8 +6,6 @@ import IUsersRepository from '../repositories/IUsersRepository';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
-// import User from '../infra/typeorm/entities/User';
-
 interface IRequest {
   password: string;
   token: string;
@@ -16,7 +14,7 @@ interface IRequest {
 @injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class ResetPasswordService {
   constructor(
-    @inject('UsersRepository') // decorator, injetando o repository de users
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
     @inject('UserTokensRepository')
@@ -26,8 +24,10 @@ class ResetPasswordService {
     private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({ password, token }: IRequest): Promise<void> {
+  public async execute({ token, password }: IRequest): Promise<void> {
     const userToken = await this.userTokensRepository.findByToken(token);
+
+    console.log('⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️', userToken);
 
     if (!userToken) {
       throw new AppError('User token does not exists');

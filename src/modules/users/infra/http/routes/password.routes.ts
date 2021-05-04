@@ -5,7 +5,7 @@ import ResetPasswordController from '../controller/ResetPasswordController';
 
 const passwordRouter = Router();
 const forgotPasswordController = new ForgotPasswordController(); // desacoplo, pra conseguir usar os métodos
-const resetPasswordController = new ResetPasswordControllerfrom(); // desacoplo, pra conseguir usar os métodos
+const resetPasswordController = new ResetPasswordController();
 
 // rota de autenticação
 

@@ -14,7 +14,7 @@ const app = express();
 
 app.use(cors()); // habilitando cors, para web requisitar
 app.use(express.json());
-app.use('/files', express.static(uploadConfig.directory)); // servindo pra aplicação de forma estática o arquivo físico, as imagens
+app.use('/files', express.static(uploadConfig.uploadsFolder)); // servindo pra aplicação de forma estática o arquivo físico, as imagens
 app.use(routes); // usando o arquivo index de rotas
 
 /*
