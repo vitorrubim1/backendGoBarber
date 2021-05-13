@@ -20,7 +20,7 @@ class UserTokensRepository implements IUserTokensRepository {
 
   // BUSCAR UM USER PELO ID
   public async findByToken(token: string): Promise<UserToken | undefined> {
-    const userToken = this.ormRepository.findOne({ where: token }); // procurando pra ver ser existe o token
+    const userToken = this.ormRepository.findOne({ where: { token } }); // procurando pra ver ser existe o token
 
     return userToken;
   }

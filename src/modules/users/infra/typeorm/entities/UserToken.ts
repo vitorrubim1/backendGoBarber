@@ -17,7 +17,7 @@ import {
 @Entity(
   'user_tokens',
 ) /*
-  @Entity: é um decorator, que funciona como uma função e como parametro enviará a classe Appointment abaixo
+  @Entity: é um decorator, que funciona como uma função e como parâmetro enviará a classe Appointment abaixo
   'user_tokens': tabela do banco de dados
 */
 class UserToken {
