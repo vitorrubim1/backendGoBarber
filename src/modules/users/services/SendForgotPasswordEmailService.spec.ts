@@ -47,7 +47,7 @@ describe('SendForgotPasswordEmail', () => {
       email: 'test@test.com',
     });
 
-    expect(sendMail).toHaveBeenCalled(); // espero que a função tenha sido chamada
+    await expect(sendMail).toHaveBeenCalled(); // espero que a função tenha sido chamada
   });
 
   // não permitir que um usuário inexistente recupere a senha
@@ -73,6 +73,6 @@ describe('SendForgotPasswordEmail', () => {
       email: 'test@test.com',
     });
 
-    expect(generateToken).toHaveBeenCalledWith(user.id); // espero que a função tenha sido chamada passando o id do user
+    await expect(generateToken).toHaveBeenCalledWith(user.id); // espero que a função tenha sido chamada passando o id do user
   });
 });
