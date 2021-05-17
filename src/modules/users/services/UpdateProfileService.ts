@@ -21,8 +21,8 @@ interface IRequest {
   password?: string;
 }
 
-injectable(); // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
-class UpdateProfile {
+@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+class UpdateProfileService {
   constructor(
     @inject('UsersRepository') // decorator, injetando o repository de users
     private usersRepository: IUsersRepository,
@@ -78,4 +78,4 @@ class UpdateProfile {
   }
 }
 
-export default UpdateProfile;
+export default UpdateProfileService;
