@@ -1,7 +1,8 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Not } from 'typeorm';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository'; // interface responsável pelos métodos de retorno
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO'; // métodos da aplicação
+import IFindAllProvidersDTO from '@modules/appointments/dtos/IFindAllProvidersDTO';
 
 import User from '../entities/User';
 
@@ -33,10 +34,30 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  // retorna todos users menos o que é passado pelo parâmetro (user logado)
+  public async findAllProviders({
+    except_user_id,
+  }: IFindAllProvidersDTO): Promise<User[]> {
+    let users: User[];
+
+    if (except_user_id) {
+      users = await this.ormRepository.find({
+        where: {
+          id: Not(except_user_id),
+        },
+      });
+    } else {
+      users = await this.ormRepository.find();
+    }
+
+    return users;
+  }
+
   // MÉTODO PARA CRIAÇÃO DE UM USER
   public async create(userData: ICreateUserDTO): Promise<User> {
-    const user = this.ormRepository.create(userData); // criando
-    await this.ormRepository.save(user); // salvando
+    const user = this.ormRepository.create(userData);
+
+    await this.ormRepository.save(user);
 
     return user;
   }

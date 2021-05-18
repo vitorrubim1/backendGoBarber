@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository'; // interface responsável pelos métodos de retorno
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO'; // métodos da aplicação
 
+import IFindAllProvidersDTO from '@modules/appointments/dtos/IFindAllProvidersDTO';
 import User from '../../infra/typeorm/entities/User';
 
 // arquivo fake, sem nenhuma dependência do typeorm para ajudar nos teste, com métodos somente com javascript
@@ -21,6 +22,19 @@ class FakeUsersRepository implements IUsersRepository {
     const findUser = this.users.find(user => user.id === id); // procurando um usuário que tenha o id igual ao que eu recebo por parâmetros
 
     return findUser;
+  }
+
+  // retorna todos users menos o que é passado pelo parâmetro (user logado)
+  public async findAllProviders({
+    except_user_id,
+  }: IFindAllProvidersDTO): Promise<User[]> {
+    let { users } = this; // = this.users
+
+    if (except_user_id) {
+      users = this.users.filter(user => user.id !== except_user_id); // quero todos os usuários que tenham o id diferente do que é passado pelo parâmetro
+    }
+
+    return users;
   }
 
   // BUSCAR UM USER PELO EMAIL
