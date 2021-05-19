@@ -1,6 +1,7 @@
 // listar os dias disponíveis de um mês
 
 import { injectable, inject } from 'tsyringe';
+import { getDaysInMonth, getDate } from 'date-fns'; // getDaysInMonth: quantos dias tem no mês, getDate: retorna o dia
 
 import IAppointmentRepository from '../repositories/IAppointmentRepository';
 
@@ -35,9 +36,26 @@ class ListProviderMonthAvailabilityService {
       { provider_id, month, year },
     );
 
-    console.log(appointments);
+    const numberOfDaysInMonth = getDaysInMonth(new Date(year, month - 1)); // aq já tenho o número de dias no mês passado por parâmetro, ex: 31
 
-    return [{ day: 1, available: false }];
+    // criando um array com a quantidade de dias (numberOfDaysInMonth)
+    const eachDayArray = Array.from(
+      { length: numberOfDaysInMonth },
+      (_, index) => index + 1,
+    );
+
+    const availability = eachDayArray.map(day => {
+      const appointmentsInDay = appointments.filter(appointment => {
+        return getDate(appointment.date) === day; // verifico se o dia que recebo por parâmetro está disponível
+      });
+
+      return {
+        day,
+        available: appointmentsInDay.length < 10, // um prestador só pode ter 10 agendamentos diários, então se for menor tem algum horário disponível (true)
+      };
+    });
+
+    return availability;
   }
 }
 

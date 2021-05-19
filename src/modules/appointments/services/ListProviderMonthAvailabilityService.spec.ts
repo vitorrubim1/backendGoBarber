@@ -20,39 +20,74 @@ describe('ListProviderMonthAvailability', () => {
 
   // exibir os meses disponives de um provedor
   it('should be able to list the month availability from provider', async () => {
-    // criando uns agendamentos
-    fakeAppointmentsRepository.create({
+    // criando agendamentos
+    await fakeAppointmentsRepository.create({
       provider_id: 'user',
-      date: new Date(2020, 3, 20, 8, 0, 0), // 3 = abril, começando do 0
+      date: new Date(2021, 4, 20, 8, 0, 0), // 4 = maio, 8h da manha
     });
 
-    fakeAppointmentsRepository.create({
+    await fakeAppointmentsRepository.create({
       provider_id: 'user',
-      date: new Date(2020, 4, 20, 8, 0, 0), // 4 = maio, começando do 0
+      date: new Date(2021, 4, 20, 9, 0, 0),
     });
 
-    fakeAppointmentsRepository.create({
+    await fakeAppointmentsRepository.create({
       provider_id: 'user',
-      date: new Date(2020, 4, 20, 10, 0, 0),
+      date: new Date(2021, 4, 20, 10, 0, 0),
     });
 
-    fakeAppointmentsRepository.create({
+    await fakeAppointmentsRepository.create({
       provider_id: 'user',
-      date: new Date(2020, 4, 21, 10, 0, 0),
+      date: new Date(2021, 4, 20, 11, 0, 0),
+    });
+
+    await fakeAppointmentsRepository.create({
+      provider_id: 'user',
+      date: new Date(2021, 4, 20, 12, 0, 0),
+    });
+
+    await fakeAppointmentsRepository.create({
+      provider_id: 'user',
+      date: new Date(2021, 4, 20, 13, 0, 0),
+    });
+
+    await fakeAppointmentsRepository.create({
+      provider_id: 'user',
+      date: new Date(2021, 4, 20, 14, 0, 0),
+    });
+
+    await fakeAppointmentsRepository.create({
+      provider_id: 'user',
+      date: new Date(2021, 4, 20, 15, 0, 0),
+    });
+
+    await fakeAppointmentsRepository.create({
+      provider_id: 'user',
+      date: new Date(2021, 4, 20, 16, 0, 0),
+    });
+
+    await fakeAppointmentsRepository.create({
+      provider_id: 'user',
+      date: new Date(2021, 4, 20, 17, 0, 0),
+    });
+
+    await fakeAppointmentsRepository.create({
+      provider_id: 'user',
+      date: new Date(2021, 4, 21, 8, 0, 0),
     });
 
     const availability = await listProviderMonthAvailability.execute({
       provider_id: 'user',
+      year: 2021,
       month: 5,
-      year: 2020,
     });
 
     expect(availability).toEqual(
       expect.arrayContaining([
-        { day: 19, availability: true }, // nada agendado
-        { day: 20, availability: false }, // fiz agendamento ali em cima
-        { day: 21, availability: false }, // fiz agendamento ali em cima
-        { day: 22, availability: true }, // nada agendado
+        { day: 19, available: true },
+        { day: 20, available: false },
+        { day: 21, available: true },
+        { day: 22, available: true },
       ]),
     );
     // espero que o availability seja igual a um array, arrayContaining: verá se a resposta do availability é um array contendo o que é passado dentro do paramêtro
