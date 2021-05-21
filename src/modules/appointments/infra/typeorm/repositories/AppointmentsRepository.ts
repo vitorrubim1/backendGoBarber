@@ -2,6 +2,7 @@ import { getRepository, Repository, Raw } from 'typeorm'; // Raw: é como se fos
 
 import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository'; // interface responsável pelos métodos de retorno
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO'; // métodos da aplicação
+import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 
 import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 import Appointment from '../entities/Appointment';
@@ -55,6 +56,37 @@ class AppointmentsRepository implements IAppointmentRepository {
         date: Raw(
           dateFieldName =>
             `to_char(${dateFieldName}, 'MM-YYYY') = "${parsedMonth}-${year}"`,
+        ), // converto a data do postgres em string, para comparar com a data que recebo por parâmetro
+      },
+    });
+
+    return appointments;
+  }
+
+  // método para consultar dias disponíveis de um prestador em um mes solicitado
+  public async findAllInDayFromProvider({
+    provider_id,
+    day,
+    month,
+    year,
+  }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
+    const parsedDay = String(day).padStart(2, '0');
+
+    const parsedMonth = String(month).padStart(
+      2,
+      '0',
+    ); /*
+
+    postgres devolve números com 2 caracters, ex: 06, nós recebemos somente 1 número.
+    se não vier com dois dígitos, acrescento um 0 a esquerda com padStart
+    */
+
+    const appointments = await this.ormRepository.find({
+      where: {
+        provider_id,
+        date: Raw(
+          dateFieldName =>
+            `to_char(${dateFieldName}, 'DD-MM-YYYY') = "${parsedDay}-${parsedMonth}-${year}"`,
         ), // converto a data do postgres em string, para comparar com a data que recebo por parâmetro
       },
     });

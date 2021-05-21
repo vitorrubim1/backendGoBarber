@@ -1,9 +1,10 @@
 import { v4 as uuid } from 'uuid';
-import { isEqual, getMonth, getYear } from 'date-fns';
+import { isEqual, getMonth, getYear, getDate } from 'date-fns';
 
 import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository'; // interface responsável pelos métodos de retorno
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO'; // métodos da aplicação
 import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
+import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 
 import Appointment from '../../infra/typeorm/entities/Appointment';
 
@@ -37,6 +38,25 @@ class AppointmentsRepository implements IAppointmentRepository {
       return (
         appointment.provider_id === provider_id && // provedor do parâmetro igual ao do bd
         getMonth(appointment.date) + 1 === month && // month + 1, já que começa no 0
+        getYear(appointment.date) === year // anos iguais
+      );
+    }); // filtrando as datas que recebo por parâmetro e pelo id do provedor
+
+    return appointments;
+  }
+
+  // método para consultar horas disponíveis de um prestador em um mes solicitado
+  public async findAllInDayFromProvider({
+    provider_id,
+    day,
+    month,
+    year,
+  }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
+    const appointments = this.appointments.filter(appointment => {
+      return (
+        appointment.provider_id === provider_id && // provedor do parâmetro igual ao do bd
+        getMonth(appointment.date) + 1 === month && // month + 1, já que começa no 0
+        getDate(appointment.date) === day && // dia
         getYear(appointment.date) === year // anos iguais
       );
     }); // filtrando as datas que recebo por parâmetro e pelo id do provedor
