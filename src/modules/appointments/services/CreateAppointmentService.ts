@@ -9,6 +9,7 @@ import Appointment from '../infra/typeorm/entities/Appointment';
 
 interface IRequest {
   provider_id: string;
+  user_id: string;
   date: Date;
 }
 
@@ -26,7 +27,11 @@ class CreateAppointmentService {
   ) {}
 
   // executando a criação de um novo agendamento. : Appointment = oq preciso retornar
-  public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
+  public async execute({
+    date,
+    provider_id,
+    user_id,
+  }: IRequest): Promise<Appointment> {
     // Promise<>: pq a função é assincrona
 
     const appointmentDate = startOfHour(date); // pra q seja agendado de hora em hora
@@ -43,6 +48,7 @@ class CreateAppointmentService {
     const appointment = await this.appointmentsRepository.create({
       // esse metódo só cria a instância do model
       provider_id,
+      user_id,
       date: appointmentDate,
     }); // chamando o metódo de criação e passando os parametros
 

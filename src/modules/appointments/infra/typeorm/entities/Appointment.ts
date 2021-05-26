@@ -30,12 +30,20 @@ class Appointment {
   id: string;
 
   @Column()
-  provider_id: string; // isso é um usuário
+  provider_id: string; // isso é um provedor de serviço
 
   // muitos agendamentos pra um usuário
   @ManyToOne(() => User) // qual é a tabela que está se referindo
   @JoinColumn({ name: 'provider_id' }) // identificação da coluna de relacionamento
   provider: User;
+
+  @Column()
+  user_id: string; // isso é um usuário
+
+  // (isso só é um relacionamento, essa informação não existe no bd)
+  @ManyToOne(() => User) // qual é a tabela que está se referindo
+  @JoinColumn({ name: 'user_id' }) // identificação da coluna de relacionamento
+  user: User;
 
   @Column('time with time zone')
   date: Date;

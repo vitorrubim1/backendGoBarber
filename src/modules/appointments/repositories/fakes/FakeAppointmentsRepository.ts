@@ -67,6 +67,7 @@ class AppointmentsRepository implements IAppointmentRepository {
   // MÉTODO PARA CRIAÇÃO DE UM APPOINTMENT E PRA SALVAR NO BD
   public async create({
     provider_id,
+    user_id,
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment(); // desacoplando informações do model da variável
