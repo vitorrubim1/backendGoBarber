@@ -1,4 +1,4 @@
-import { startOfHour } from 'date-fns';
+import { startOfHour, isBefore, getHours } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'; // classe de erros
@@ -18,7 +18,7 @@ class CreateAppointmentService {
   // SOLID: D: DEPENDENCY INVERSION
   /*
   basicamente, inverteremos as obrigações, a rota que for utilizar este service precisará passar o repositório nos parâmetros,
-  assim tendo que tipar esse repositório com a interface IAppointmentRepository criada para substituir os métodos do typeorm
+  assim tendo que typar esse repositório com a interface IAppointmentRepository criada para substituir os métodos do typeorm
   */
 
   constructor(
@@ -32,25 +32,42 @@ class CreateAppointmentService {
     provider_id,
     user_id,
   }: IRequest): Promise<Appointment> {
-    // Promise<>: pq a função é assincrona
+    // Promise<>: pq a função é assíncrona
 
     const appointmentDate = startOfHour(date); // pra q seja agendado de hora em hora
 
-    const findAppointmentsInSameDate = await this.appointmentsRepository.findByDate(
-      appointmentDate,
-    ); // passando pro metodo dentro do repository, a data formatada
+    // não deixa criar um agendamento numa data passada
+    if (isBefore(appointmentDate, Date.now())) {
+      throw new AppError("You can't create an appointment on a past date");
+    }
 
-    // ver se existe um agendemento com o mesmo horário
-    if (findAppointmentsInSameDate) {
+    // não permitir a criação consigo mesmo
+    if (user_id === provider_id) {
+      throw new AppError("You can't create an appointment with yourself.");
+    }
+
+    // das 8hrs as 17hrs
+    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
+      throw new AppError(
+        'You can only create appointments between 8am and 5pm.',
+      );
+    }
+
+    const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
+      appointmentDate,
+    ); // passando pro método dentro do repository, a data formatada
+
+    // ver se existe um agendamento com o mesmo horário
+    if (findAppointmentInSameDate) {
       throw new AppError('This appointment is already booked'); // criando um erro, pq não temos acesso ao request, response
     }
 
     const appointment = await this.appointmentsRepository.create({
-      // esse metódo só cria a instância do model
+      // esse método só cria a instância do model
       provider_id,
       user_id,
       date: appointmentDate,
-    }); // chamando o metódo de criação e passando os parametros
+    }); // chamando o método de criação e passando os parâmetros
 
     return appointment;
   }

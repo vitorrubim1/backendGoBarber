@@ -72,7 +72,7 @@ class AppointmentsRepository implements IAppointmentRepository {
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment(); // desacoplando informações do model da variável
 
-    Object.assign(appointment, { id: uuid(), date, provider_id }); // jogando tudo de dentro do objeto no "appointment"
+    Object.assign(appointment, { id: uuid(), date, provider_id, user_id }); // jogando tudo de dentro do objeto no "appointment"
 
     this.appointments.push(appointment); // salvando as informações na variável da linha 17
 
