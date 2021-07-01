@@ -23,7 +23,7 @@ type IResponse = Array<{
 @injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
 class ListProviderMonthAvailabilityService {
   constructor(
-    @inject('AppointmentRepository')
+    @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentRepository,
   ) {}
 
