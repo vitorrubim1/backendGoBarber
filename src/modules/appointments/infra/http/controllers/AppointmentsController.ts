@@ -1,4 +1,4 @@
-import { parseISO } from 'date-fns'; // isEqual: pra ver se é igual, mesma data e mesmo horário
+import { parseISO } from 'date-fns';
 import { container } from 'tsyringe';
 import { Request, Response } from 'express';
 

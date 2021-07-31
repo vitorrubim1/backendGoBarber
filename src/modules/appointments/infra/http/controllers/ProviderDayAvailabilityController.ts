@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 
 import ListProviderDayAvailabilityService from '@modules/appointments/services/ListProviderDayAvailabilityService'; // services
 
-export default class ProviderMonthAvailabilityController {
+export default class ProviderDayAvailabilityController {
   public async index(request: Request, response: Response): Promise<Response> {
     const { provider_id } = request.params;
     const { day, month, year } = request.body;

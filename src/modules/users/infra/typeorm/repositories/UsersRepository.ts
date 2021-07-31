@@ -1,13 +1,12 @@
-import { getRepository, Repository, Not } from 'typeorm';
+import { getRepository, Not, Repository } from 'typeorm';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository'; // interface responsável pelos métodos de retorno
-import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO'; // métodos da aplicação
-import IFindAllProvidersDTO from '@modules/appointments/dtos/IFindAllProvidersDTO';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
+import IFindAllProvidersDTO from '@modules/users/dtos/IFindAllProvidersDTO';
 import User from '../entities/User';
 
 // arquivo responsável por criar, armazenar, ler, editar
-
 class UsersRepository implements IUsersRepository {
   /*
    <User>: tipagem da classe, que é o model e a representação da tabela do bd
@@ -17,21 +16,21 @@ class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>; // é uma entidade do typeorm, como os métodos de save, delete, update, save ...
 
   constructor() {
-    this.ormRepository = getRepository(User); // criando e buscando o repositorio de appointment
+    this.ormRepository = getRepository(User); // criando e buscando o repositório de usuário
   }
 
-  // BUSCAR UM USER PELO ID
   public async findById(id: string): Promise<User | undefined> {
-    const user = this.ormRepository.findOne(id); // procurando user pelo id
-    return user;
+    const findAppointment = await this.ormRepository.findOne(id);
+
+    return findAppointment;
   }
 
-  // BUSCAR UM USER PELO EMAIL
   public async findByEmail(email: string): Promise<User | undefined> {
-    const user = this.ormRepository.findOne({
+    const findAppointment = await this.ormRepository.findOne({
       where: { email },
-    }); // procurando user pelo email
-    return user;
+    });
+
+    return findAppointment;
   }
 
   // retorna todos users menos o que é passado pelo parâmetro (user logado)
@@ -53,7 +52,6 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  // MÉTODO PARA CRIAÇÃO DE UM USER
   public async create(userData: ICreateUserDTO): Promise<User> {
     const user = this.ormRepository.create(userData);
 
@@ -62,9 +60,8 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
-  // SALVANDO O USER NO BANCO
   public async save(user: User): Promise<User> {
-    return this.ormRepository.save(user); // retornando o user criado
+    return this.ormRepository.save(user);
   }
 }
 

@@ -1,66 +1,55 @@
-// arquivo de teste
+import AppError from '@shared/errors/AppError';
 
-import AppError from '@shared/errors/AppError'; // classe de erros
-
-import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider'; // fakeRepositório que representa o repositório, só que sem dependência do typeorm e do banco de dados(somente js)
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository'; // fakeRepositório que representa o repositório, só que sem dependência do typeorm e do banco de dados(somente js)
+import FakeStorageProvider from '@shared/container/providers/StorageProvider/fakes/FakeStorageProvider';
+import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import UpdateUserAvatarService from './UpdateUserAvatarService';
-
-// sempre manter a convenção dos nomes dos teste em inglês
-// todos testes devem ser lidos/descritos como se fosse uma frase, caso não entenda https://translate.google.com.br/
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeStorageProvider: FakeStorageProvider;
 let updateUserAvatar: UpdateUserAvatarService;
 
-// describe: descrevo ao que será os teste nesse caso sobre a criação de um user
-describe('CreateUser', () => {
+describe('UpdateUserAvatar', () => {
   beforeEach(() => {
-    fakeUsersRepository = new FakeUsersRepository(); // instancio pq o service abaixo precisa receber o repository por parâmetro, já que esse fake possui os mesmo métodos que é esperado
+    fakeUsersRepository = new FakeUsersRepository();
     fakeStorageProvider = new FakeStorageProvider();
 
     updateUserAvatar = new UpdateUserAvatarService(
       fakeUsersRepository,
       fakeStorageProvider,
-    ); // criando o service, e recebendo o repositório fake, pra testes
+    );
   });
 
-  // permitir a atualização do avatar de um usuário
-  it('should be able to update an avatar', async () => {
-    // criando um user pq pra atualizar avatar preciso de um id
+  it('should be able to create a new user', async () => {
     const user = await fakeUsersRepository.create({
-      name: 'tests ts',
-      email: 'test@test.com',
-      password: '12345',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '123456',
     });
 
     await updateUserAvatar.execute({
-      user_id: user.id, // id do user acima recém criado
+      user_id: user.id,
       avatarFilename: 'avatar.jpg',
     });
 
-    await expect(user.avatar).toBe('avatar.jpg'); // como o service retorna o avatar do user atualizado, eu espero que isso seja retornado
+    expect(user.avatar).toBe('avatar.jpg');
   });
 
-  // não permitir a atualização do avatar de um usuário inexistente
-  it('should not be able to update avatar from not existing user', async () => {
+  it('should not be able update avatar from non existing user', async () => {
     await expect(
       updateUserAvatar.execute({
-        user_id: 'non-existing-id', // id inexistente pra dar error
+        user_id: 'non-existing-user',
         avatarFilename: 'avatar.jpg',
       }),
-    ).rejects.toBeInstanceOf(AppError); // como passo um id que não existe, espero erro
+    ).rejects.toBeInstanceOf(AppError);
   });
 
-  // permitir a exclusão de um avatar se um novo tiver sendo atualizado
-  it('should be delete old avatar when updating new one', async () => {
+  it('should delete old avatar when updating new one', async () => {
     const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile'); // spyOn: método do jest para espionar se uma função foi executada, retornando a função que quero espionar
 
-    // criando um user pq pra atualizar avatar preciso de um id
     const user = await fakeUsersRepository.create({
-      name: 'tests ts',
-      email: 'test@test.com',
-      password: '12345',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '123456',
     });
 
     await updateUserAvatar.execute({

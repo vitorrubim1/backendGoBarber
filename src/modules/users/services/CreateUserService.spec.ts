@@ -1,51 +1,42 @@
-// arquivo de teste
+import AppError from '@shared/errors/AppError';
 
-import AppError from '@shared/errors/AppError'; // classe de erros
-
-import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository'; // fakeRepositório que representa o repositório, só que sem dependência do typeorm e do banco de dados(somente js)
-import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider'; // FakeHashProvider que representa o gerador de senhas criptografada, só que sem dependência do bcrypt(somente js)
+import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
+import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import CreateUserService from './CreateUserService';
-
-// sempre manter a convenção dos nomes dos teste em inglês
-// todos testes devem ser lidos/descritos como se fosse uma frase, caso não entenda https://translate.google.com.br/
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
 let createUser: CreateUserService;
 
-// describe: descrevo ao que será os teste nesse caso sobre a criação de um user
 describe('CreateUser', () => {
-  // beForEach instância cada um antes de cada teste
   beforeEach(() => {
-    fakeUsersRepository = new FakeUsersRepository(); // instancio pq o service abaixo precisa receber o repository por parâmetro, já que esse fake possui os mesmo métodos que é esperado
+    fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider); // criando o service, e recebendo o repositório fake, pra testes
+    createUser = new CreateUserService(fakeUsersRepository, fakeHashProvider);
   });
 
-  // permitir a criação de um user
   it('should be able to create a new user', async () => {
     const user = await createUser.execute({
-      name: 'tests ts',
-      email: 'test@test.com',
-      password: '12345',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '123123',
     });
 
     expect(user).toHaveProperty('id');
   });
 
-  // para rejeitar caso haja dois usuários com mesmo email
-  it('should not be able to create a new user with same email from another', async () => {
+  it('should not be able to create a new user with email from another', async () => {
     await createUser.execute({
-      name: 'tests ts',
-      email: 'test@test.com',
-      password: '12345',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '123123',
     });
 
     await expect(
-      await createUser.execute({
-        name: 'tests ts',
-        email: 'test@test.com',
-        password: '12345',
+      createUser.execute({
+        name: 'John Doe',
+        email: 'johndoe@example.com',
+        password: '123123',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

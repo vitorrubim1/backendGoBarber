@@ -1,41 +1,38 @@
 import { getRepository, Repository, Raw } from 'typeorm'; // Raw: é como se fosse uma query SQL, onde o typeorm não interfere
 
-import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository'; // interface responsável pelos métodos de retorno
+import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository'; // interface responsável pelos métodos de retorno
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO'; // métodos da aplicação
-import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 
 import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
+import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 import Appointment from '../entities/Appointment';
 
-// DTO: Data Transfer Object
-
-// arquivo responsável por criar, armazenar, ler, editar
-
-class AppointmentsRepository implements IAppointmentRepository {
+/*
+  DTO: Data Transfer Object
+  Arquivo responsável por criar, armazenar, ler, editar
+*/
+class AppointmentsRepository implements IAppointmentsRepository {
   /*
-   <Appointment>: tipagem da classe, que é o model e a representação da tabela do bd
-   implements: que será os métodos que esse arquivo deverá retornar
-  */
+    <Appointment>: tipagem da classe, que é o model e a representação da tabela do bd
+    implements: que será os métodos que esse arquivo deverá retornar
+   */
 
-  private ormRepository: Repository<Appointment>; // é uma entidade do typeorm, como os métodos de save, delete, update, save ...
+  private ormRepository: Repository<Appointment>; // é uma entidade do typeorm, com os métodos de save, delete, update, save ...
 
   constructor() {
-    this.ormRepository = getRepository(Appointment); // criando e buscando o repositorio de appointment
+    this.ormRepository = getRepository(Appointment); // criando e buscando o repositório de appointment
   }
 
   // MÉTODO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA
   public async findByDate(date: Date): Promise<Appointment | undefined> {
-    // Promise<>: pq a função é assíncrona
-    // caso encontre na mesma data retorna o próprio Appointment, caso não retorna null
-
     const findAppointment = await this.ormRepository.findOne({
       where: { date }, // encontrar um agendamento que a data que eu recebo seja igual a alguma data no bd
     });
 
-    return findAppointment || undefined; // se não encontrar por padrão vem undefined, mas eu quero q seja null
+    return findAppointment;
   }
 
-  // método para consultar dias disponíveis de um prestador em um mes solicitado
+  // MÉTODO PARA CONSULTAR DIAS DISPONÍVEIS DE UM PRESTADOR EM UM MÊS ESPECÍFICO
   public async findAllInMonthFromProvider({
     provider_id,
     month,
@@ -45,17 +42,16 @@ class AppointmentsRepository implements IAppointmentRepository {
       2,
       '0',
     ); /*
-
-    postgres devolver números com 2 caracters, ex: 06, nós recebemos somente 1 número.
-    se não vier com dois dígitos, acrescento um 0 a esquerda com padStart
-    */
+        postgres devolver números com 2 caracteres, ex: 06, nós recebemos somente 1 número.
+        se não vier com dois dígitos, acrescento um 0 a esquerda com padStart
+        */
 
     const appointments = await this.ormRepository.find({
       where: {
         provider_id,
         date: Raw(
           dateFieldName =>
-            `to_char(${dateFieldName}, 'MM-YYYY') = "${parsedMonth}-${year}"`,
+            `to_char(${dateFieldName}, 'MM-YYYY') = '${parsedMonth}-${year}'`,
         ), // converto a data do postgres em string, para comparar com a data que recebo por parâmetro
       },
     });
@@ -63,7 +59,7 @@ class AppointmentsRepository implements IAppointmentRepository {
     return appointments;
   }
 
-  // método para consultar dias disponíveis de um prestador em um mes solicitado
+  // MÉTODO PARA CONSULTAR DIAS DISPONÍVEIS DE UM PRESTADOR EM UM MÊS ESPECÍFICO
   public async findAllInDayFromProvider({
     provider_id,
     day,
@@ -71,23 +67,15 @@ class AppointmentsRepository implements IAppointmentRepository {
     year,
   }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
     const parsedDay = String(day).padStart(2, '0');
-
-    const parsedMonth = String(month).padStart(
-      2,
-      '0',
-    ); /*
-
-    postgres devolve números com 2 caracters, ex: 06, nós recebemos somente 1 número.
-    se não vier com dois dígitos, acrescento um 0 a esquerda com padStart
-    */
+    const parsedMonth = String(month).padStart(2, '0');
 
     const appointments = await this.ormRepository.find({
       where: {
         provider_id,
         date: Raw(
           dateFieldName =>
-            `to_char(${dateFieldName}, 'DD-MM-YYYY') = "${parsedDay}-${parsedMonth}-${year}"`,
-        ), // converto a data do postgres em string, para comparar com a data que recebo por parâmetro
+            `to_char(${dateFieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
+        ),
       },
     });
 
@@ -102,10 +90,11 @@ class AppointmentsRepository implements IAppointmentRepository {
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = this.ormRepository.create({
       provider_id,
-      date,
       user_id,
-    }); // criando
-    await this.ormRepository.save(appointment); // salvando
+      date,
+    });
+
+    await this.ormRepository.save(appointment);
 
     return appointment;
   }

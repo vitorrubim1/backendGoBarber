@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 
-import User from '@modules/users/infra/typeorm/entities/User'; // representa a tabela do user
+import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 /*
@@ -8,15 +8,14 @@ service responsável por adicionar uma imagem a um usuário,
 por apagar uma imagem antiga caso o usuário esteja fazendo um update
 somente alterar caso o usuário que esteja autenticado exista
 */
-
 interface IRequest {
   user_id: string;
 }
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable()
 class ListProvidersService {
   constructor(
-    @inject('UsersRepository') // decorator, injetando o repository de users
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
   ) {}
 

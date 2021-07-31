@@ -1,11 +1,10 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError'; // classe de erros
+import AppError from '@shared/errors/AppError';
 
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
-
-import User from '../infra/typeorm/entities/User'; // representa a tabela de user
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 /*
 service responsável por adicionar uma imagem a um usuário,
@@ -21,13 +20,13 @@ interface IRequest {
   password?: string;
 }
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable()
 class UpdateProfileService {
   constructor(
-    @inject('UsersRepository') // decorator, injetando o repository de users
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
-    @inject('HashProvider') // decorator, injetando o repository de appointment
+    @inject('HashProvider')
     private hashProvider: IHashProvider,
   ) {}
 
@@ -35,20 +34,20 @@ class UpdateProfileService {
     user_id,
     name,
     email,
-    password,
     old_password,
+    password,
   }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
-      throw new AppError('User not found.');
+      throw new AppError('User not found');
     }
 
     const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
 
     // verificando se o email que será atualizado é diferente de algum outro cadastrado
-    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id) {
-      throw new AppError('Email already in use.');
+    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id) {
+      throw new AppError('E-mail already in use.');
     }
 
     user.name = name;
@@ -56,7 +55,7 @@ class UpdateProfileService {
 
     if (password && !old_password) {
       throw new AppError(
-        'You need to inform the old password to set a new password',
+        'You need to inform old password to set a new password.',
       );
     }
 
@@ -68,7 +67,7 @@ class UpdateProfileService {
       );
 
       if (!checkOldPassword) {
-        throw new AppError('Old password does not match');
+        throw new AppError('Old password does not match.');
       }
 
       user.password = await this.hashProvider.generateHash(password);

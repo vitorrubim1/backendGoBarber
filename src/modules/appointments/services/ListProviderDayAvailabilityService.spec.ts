@@ -1,34 +1,30 @@
-// arquivo de teste
+// ARQUIVO DE TESTE
 
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProviderDayAvailabilityService from './ListProviderDayAvailabilityService';
 
-// sempre manter a convenção dos nomes dos teste em inglês
-// todos testes devem ser lidos/descritos como se fosse uma frase, caso não entenda https://translate.google.com.br/
-
+// variáveis global pra não repetir códigos
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
-let listProviderDayAvailabilityService: ListProviderDayAvailabilityService;
+let listProviderDayAvailability: ListProviderDayAvailabilityService;
 
-// describe: descrevo ao que será os teste nesse caso sobre a criação de um user
-describe('ListProviderMonthAvailability', () => {
+describe('ListProviderDayAvailability', () => {
+  // beForEach instância cada um antes de cada teste
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
-    listProviderDayAvailabilityService = new ListProviderDayAvailabilityService(
+    listProviderDayAvailability = new ListProviderDayAvailabilityService(
       fakeAppointmentsRepository,
     ); // criando o service, e recebendo o repositório fake, pra testes
   });
 
-  // exibir os dias disponíveis de um provedor
   it('should be able to list the day availability from provider', async () => {
-    // criando agendamentos
     await fakeAppointmentsRepository.create({
-      provider_id: 'provider',
+      provider_id: 'user',
       user_id: 'user',
       date: new Date(2021, 4, 20, 14, 0, 0),
     });
 
     await fakeAppointmentsRepository.create({
-      provider_id: 'provider',
+      provider_id: 'user',
       user_id: 'user',
       date: new Date(2021, 4, 20, 15, 0, 0),
     });
@@ -38,8 +34,8 @@ describe('ListProviderMonthAvailability', () => {
       return new Date(2021, 4, 20, 11).getTime(); // 11h
     });
 
-    const availability = await listProviderDayAvailabilityService.execute({
-      provider_id: 'provider',
+    const availability = await listProviderDayAvailability.execute({
+      provider_id: 'user',
       year: 2021,
       month: 5,
       day: 20,

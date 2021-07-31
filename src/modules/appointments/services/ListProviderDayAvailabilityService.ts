@@ -3,7 +3,7 @@
 import { injectable, inject } from 'tsyringe';
 import { getHours, isAfter } from 'date-fns'; // getDaysInMonth: quantos dias tem no mês, getDate: retorna o dia
 
-import IAppointmentRepository from '../repositories/IAppointmentRepository';
+import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
 interface IRequest {
   provider_id: string;
@@ -17,25 +17,25 @@ type IResponse = Array<{
   available: boolean;
 }>;
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable()
 class ListProviderDayAvailabilityService {
   constructor(
     @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentRepository,
+    private appointmentsRepository: IAppointmentsRepository,
   ) {}
 
   public async execute({
     provider_id,
-    day,
-    month,
     year,
+    month,
+    day,
   }: IRequest): Promise<IResponse> {
     const appointments = await this.appointmentsRepository.findAllInDayFromProvider(
       {
         provider_id,
-        day,
-        month,
         year,
+        month,
+        day,
       },
     );
 
@@ -44,7 +44,7 @@ class ListProviderDayAvailabilityService {
     const hourStart = 8; // horário de início
 
     // criando array
-    const eachArray = Array.from(
+    const eachHourArray = Array.from(
       { length: 10 },
       (_, index) => index + hourStart, // pra começar as 8h da manhã
     ); // vai ter um length de 10, pq só é possível em um dia 10 agendamentos
@@ -52,7 +52,7 @@ class ListProviderDayAvailabilityService {
     const currentDate = new Date(Date.now());
 
     // verificando quais são as horas disponíveis
-    const availability = eachArray.map(hour => {
+    const availability = eachHourArray.map(hour => {
       const hasAppointmentInHour = appointments.find(
         appointment => getHours(appointment.date) === hour,
       );

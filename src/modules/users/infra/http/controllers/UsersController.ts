@@ -5,11 +5,11 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 
 export default class UsersController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, email, password } = request.body; // dados do formulário
+    const { name, email, password } = request.body;
 
-    const createUser = container.resolve(CreateUserService); // toda vez que for utilizar um service instanciarei dessa forma
+    const createUser = container.resolve(CreateUserService);
 
-    const user = await createUser.execute({ name, email, password }); // executando do service o metódo de criação, e passando os parametros
+    const user = await createUser.execute({ name, email, password }); // executando do service o método de criação, e passando os parâmetros
 
     const userData = {
       // retornando o user sem a senha

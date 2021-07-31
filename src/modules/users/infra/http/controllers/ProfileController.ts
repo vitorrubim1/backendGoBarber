@@ -10,11 +10,13 @@ export default class ProfileController {
 
     const user_id = request.user.id;
 
-    const showProfile = container.resolve(ShowProfileService); // toda vez que for utilizar um service instanciarei dessa forma
+    const showProfile = container.resolve(ShowProfileService);
 
-    const user = await showProfile.execute({ user_id });
+    const user = await showProfile.execute({
+      user_id,
+    });
 
-    const userData = {
+    const userWithoutPassword = {
       id: user.id,
       name: user.name,
       email: user.email,
@@ -22,14 +24,14 @@ export default class ProfileController {
       updated_at: user.updated_at,
     };
 
-    return response.json(userData);
+    return response.json(userWithoutPassword);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { name, email, old_password, password } = request.body; // dados do formulário
+    const { name, email, old_password, password } = request.body;
 
-    const updateProfile = container.resolve(UpdateProfileService); // toda vez que for utilizar um service instanciarei dessa forma
+    const updateProfile = container.resolve(UpdateProfileService);
 
     const user = await updateProfile.execute({
       user_id,
@@ -39,8 +41,8 @@ export default class ProfileController {
       password,
     }); // executando do service o método de criação, e passando os parâmetros
 
+    // Com a atualização do TypeScript, isso se faz necessário
     const userData = {
-      // retornando o user sem a senha
       id: user.id,
       name: user.name,
       email: user.email,

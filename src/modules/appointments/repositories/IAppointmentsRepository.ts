@@ -4,10 +4,9 @@ import IFindAllInMonthFromProviderDTO from '../dtos/IFindAllInMonthFromProviderD
 import IFindAllInDayFromProviderDTO from '../dtos/IFindAllInDayFromProviderDTO';
 
 // arquivo que será responsável por dizer qual são os métodos que o repository dentro do typeorm>repository terá.
-
-export default interface IAppointmentRepository {
+export default interface IAppointmentsRepository {
   create(data: ICreateAppointmentDTO): Promise<Appointment>; // já que estou desacoplando a aplicação do typeorm, estou "criando/definindo" qual será as informações que meu método de criação terá
-  findByDate(date: Date): Promise<Appointment | undefined>;
+  findByDate(data: Date): Promise<Appointment | undefined>;
 
   findAllInMonthFromProvider(
     data: IFindAllInMonthFromProviderDTO,

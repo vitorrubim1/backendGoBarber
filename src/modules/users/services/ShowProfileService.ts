@@ -1,8 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError'; // classe de erros
+import AppError from '@shared/errors/AppError';
 
-import User from '../infra/typeorm/entities/User'; // representa a tabela do user
+import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 /*
@@ -15,10 +15,10 @@ interface IRequest {
   user_id: string;
 }
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable()
 class ShowProfileService {
   constructor(
-    @inject('UsersRepository') // decorator, injetando o repository de users
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
   ) {}
 

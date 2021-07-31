@@ -5,17 +5,17 @@ import ProvidersController from '../controllers/ProvidersController';
 import ProviderMonthAvailabilityController from '../controllers/ProviderMonthAvailabilityController';
 import ProviderDayAvailabilityController from '../controllers/ProviderDayAvailabilityController';
 
+// desacoplo, pra conseguir usar os métodos
 const providersRouter = Router();
-
-const providersController = new ProvidersController(); // desacoplo, pra conseguir usar os métodos
+const providersController = new ProvidersController();
 const providerMonthAvailabilityController = new ProviderMonthAvailabilityController();
 const providerDayAvailabilityController = new ProviderDayAvailabilityController();
 
 providersRouter.use(ensureAuthenticated); // para que todas as rotas usem a validação de autenticação
 
 // middleware
-
 providersRouter.get('/', providersController.index);
+
 providersRouter.get(
   '/:provider_id/month-availability',
   providerMonthAvailabilityController.index,

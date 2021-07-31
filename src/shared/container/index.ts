@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import '@modules/users/providers'; // para executar o provider de hash de senha
 import './providers'; // para executar o provider de upload de image(ainda em disco)
 
-import IAppointmentRepository from '@modules/appointments/repositories/IAppointmentRepository';
+import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import AppointmentsRepository from '@modules/appointments/infra/typeorm/repositories/AppointmentsRepository';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
@@ -13,7 +13,7 @@ import IUserTokensRepository from '@modules/users/repositories/IUserTokensReposi
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
 
 // toda vez que uma classe injetar uma dependência 'AppointmentsRepository', como essa daqui foi registrada(registerSingleton) retornará uma instância da classe IAppointmentRepository;
-container.registerSingleton<IAppointmentRepository>(
+container.registerSingleton<IAppointmentsRepository>(
   'AppointmentsRepository', // identificação do "registro"
   AppointmentsRepository, // e oq vai retornar, o generic obriga que tenha o formato da interface
 );

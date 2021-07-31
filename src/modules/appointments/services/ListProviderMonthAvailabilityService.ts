@@ -1,9 +1,7 @@
-// listar os dias disponíveis de um mês
-
 import { injectable, inject } from 'tsyringe';
 import { getDaysInMonth, getDate } from 'date-fns'; // getDaysInMonth: quantos dias tem no mês, getDate: retorna o dia
 
-import IAppointmentRepository from '../repositories/IAppointmentRepository';
+import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
 /*
 service responsável por validar dias disponíveis de um prestador
@@ -20,27 +18,33 @@ type IResponse = Array<{
   available: boolean;
 }>;
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable()
 class ListProviderMonthAvailabilityService {
   constructor(
     @inject('AppointmentsRepository')
-    private appointmentsRepository: IAppointmentRepository,
+    private appointmentsRepository: IAppointmentsRepository,
   ) {}
 
   public async execute({
     provider_id,
-    month,
     year,
+    month,
   }: IRequest): Promise<IResponse> {
     const appointments = await this.appointmentsRepository.findAllInMonthFromProvider(
-      { provider_id, month, year },
+      {
+        provider_id,
+        year,
+        month,
+      },
     );
 
     const numberOfDaysInMonth = getDaysInMonth(new Date(year, month - 1)); // aq já tenho o número de dias no mês passado por parâmetro, ex: 31
 
     // criando um array com a quantidade de dias (numberOfDaysInMonth)
     const eachDayArray = Array.from(
-      { length: numberOfDaysInMonth },
+      {
+        length: numberOfDaysInMonth,
+      },
       (_, index) => index + 1,
     );
 

@@ -5,16 +5,16 @@ import uploadConfig from '@config/upload';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated'; // middleware de validação de autenticação
 
-import UsersController from '../controller/UsersController';
-import UserAvatarController from '../controller/UserAvatarController';
+import UsersController from '../controllers/UsersController';
+import UserAvatarController from '../controllers/UserAvatarController';
 
+// desacoplo, pra conseguir usar os métodos
 const usersRouter = Router();
-const usersController = new UsersController(); // desacoplo, pra conseguir usar os métodos
-const userAvatarController = new UserAvatarController(); // desacoplo, pra conseguir usa o método de atualizar avatar, em controller diferente pq é relacionado somente ao avatar, e não poderia ser dentro do update do user pq, o método update já é pro user em si, senha, email ...
+const usersController = new UsersController();
+const userAvatarController = new UserAvatarController();
 const upload = multer(uploadConfig); // instanciando o multer e passando as configurações de upload
 
 // middlewares
-
 usersRouter.post('/', usersController.create);
 
 usersRouter.patch(

@@ -3,8 +3,7 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError'; // classe de erros
 
-import IAppointmentRepository from '../repositories/IAppointmentRepository'; // interface com métodos não dependentes do typeorm
-
+import IAppointmentsRepository from '../repositories/IAppointmentsRepository'; // interface com métodos não dependentes do typeorm
 import Appointment from '../infra/typeorm/entities/Appointment';
 
 interface IRequest {
@@ -13,17 +12,18 @@ interface IRequest {
   date: Date;
 }
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable() // digo que essa classe abaixo, é injetável, recebe injeção de dependência, através do inject()
 class CreateAppointmentService {
-  // SOLID: D: DEPENDENCY INVERSION
   /*
+  SOLID: D: DEPENDENCY INVERSION
+
   basicamente, inverteremos as obrigações, a rota que for utilizar este service precisará passar o repositório nos parâmetros,
   assim tendo que typar esse repositório com a interface IAppointmentRepository criada para substituir os métodos do typeorm
   */
 
   constructor(
     @inject('AppointmentsRepository') // decorator, injetando o repository de appointment
-    private appointmentsRepository: IAppointmentRepository,
+    private appointmentsRepository: IAppointmentsRepository,
   ) {}
 
   // executando a criação de um novo agendamento. : Appointment = oq preciso retornar

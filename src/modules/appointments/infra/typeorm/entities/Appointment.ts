@@ -18,11 +18,10 @@ import {
 import User from '@modules/users/infra/typeorm/entities/User';
 
 // Model está relacionado com uma tabela do banco de dados
-
 @Entity(
   'appointments',
 ) /*
-  @Entity: é um decorator, que funciona como uma função e como parametro enviará a classe Appointment abaixo
+  @Entity: é um decorator, que funciona como uma função e como parâmetro enviará a classe Appointment abaixo
   'appointments': tabela do banco de dados
 */
 class Appointment {
@@ -45,7 +44,7 @@ class Appointment {
   @JoinColumn({ name: 'user_id' }) // identificação da coluna de relacionamento
   user: User;
 
-  @Column('time with time zone')
+  @Column('timestamp with time zone')
   date: Date;
 
   @CreateDateColumn()

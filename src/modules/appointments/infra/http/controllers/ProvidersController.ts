@@ -10,9 +10,7 @@ export default class ProvidersController {
 
     const listProviders = container.resolve(ListProvidersService); // toda vez que for utilizar um service instanciarei dessa forma
 
-    const providers = await listProviders.execute({
-      user_id,
-    }); // executando a criação dentro do service
+    const providers = await listProviders.execute({ user_id }); // executando a criação dentro do service
 
     return response.json(providers);
   }
