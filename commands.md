@@ -4,8 +4,11 @@
 # Listar todas as imagens/containers criados ou rodando
 $ sudo docker ps -a
 
-# Criar um container(database)
+# Criar um container(database) postgres
 $ sudo docker run --name `nome_container` -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
+
+# Criar um container(database) mongo
+$ sudo docker run --name `nome_container` -p 27017:27017 -d -t mongo
 
 # Rodar um container
 $ sudo docker start `id_do_container` ou `nome_container`

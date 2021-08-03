@@ -1,16 +1,30 @@
-{
-  "_comment": "esse arquivo é de configuração da base de dados",
+[
+  {
+    "_comment": "esse arquivo é de configuração da base de dados default (postgres)",
 
-  "type": "postgres",
-  "host": "localhost",
-  "port": 5432,
-  "username": "postgres",
-  "password": "docker",
-  "database": "gostack_gobarber",
-  "entities": ["./src/modules/**/infra/typeorm/entities/*.ts"],
-  "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
-  "cli": {
-    "_comment": "configurações para a interface de linha de comando do typeorm",
-    "migrationsDir": "./src/shared/infra/typeorm/migrations"
+    "name": "default",
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "docker",
+    "database": "gostack_gobarber",
+    "entities": ["./src/modules/**/infra/typeorm/entities/*.ts"],
+    "migrations": ["./src/shared/infra/typeorm/migrations/*.ts"],
+    "cli": {
+      "_comment": "configurações para a interface de linha de comando do typeorm",
+      "migrationsDir": "./src/shared/infra/typeorm/migrations"
+    }
+  },
+  {
+    "_comment": "esse arquivo é de configuração da base de dados mongodb",
+
+    "name": "mongo",
+    "type": "mongodb",
+    "host": "localhost",
+    "port": 27017,
+    "database": "gostack_gobarber",
+    "useUnifiedTopology": true,
+    "entities": ["./src/modules/**/infra/typeorm/schemas/*.ts"]
   }
-}
+]
