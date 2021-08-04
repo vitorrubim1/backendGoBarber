@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
@@ -16,15 +17,7 @@ export default class ProfileController {
       user_id,
     });
 
-    const userWithoutPassword = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-    };
-
-    return response.json(userWithoutPassword);
+    return response.json(classToClass(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -41,15 +34,6 @@ export default class ProfileController {
       password,
     }); // executando do service o método de criação, e passando os parâmetros
 
-    // Com a atualização do TypeScript, isso se faz necessário
-    const userData = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      created_at: user.created_at,
-      updated_at: user.updated_at,
-    };
-
-    return response.json(userData);
+    return response.json(classToClass(user));
   }
 }

@@ -13,7 +13,7 @@ export default {
     destination: tmpFolder,
     filename(request, file, callback) {
       // nome que a imagem terá
-      const fileHash = crypto.randomBytes(10).toString('HEX'); // gerando 10 caracteres aleatórios
+      const fileHash = crypto.randomBytes(10).toString('hex'); // gerando 10 caracteres aleatórios
       const fileName = `${fileHash}-${file.originalname}`; // hash-nome-original-do-arquivo
 
       return callback(null, fileName);

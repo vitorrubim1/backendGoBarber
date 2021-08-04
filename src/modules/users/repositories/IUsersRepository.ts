@@ -1,6 +1,5 @@
-import IFindAllProvidersDTO from '../dtos/IFindAllProvidersDTO';
-
 import User from '../infra/typeorm/entities/User'; // model de user
+import IFindAllProvidersDTO from '../dtos/IFindAllProvidersDTO';
 import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
 // arquivo que será responsável por dizer qual são os métodos que o repository dentro do typeorm>repository terá.

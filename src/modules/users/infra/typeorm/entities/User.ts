@@ -11,6 +11,8 @@ import {
   CreateDateColumn, UpdateDateColumn: created_at e updated_at é uma integração do TypeORM
 */
 
+import { Exclude, Expose } from 'class-transformer';
+
 // Model está relacionado com uma tabela do banco de dados
 
 @Entity(
@@ -30,6 +32,7 @@ class User {
   email: string;
 
   @Column()
+  @Exclude() // não enviar pro front
   password: string;
 
   @Column()
@@ -40,6 +43,14 @@ class User {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @Expose({ name: 'avatar_url' })
+  getAvatarUrl(): string | null {
+    // mostrar o link com avatar
+    return this.avatar
+      ? `${process.env.APP_API_URL}/files/${this.avatar}`
+      : null;
+  }
 }
 
 export default User;
