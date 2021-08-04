@@ -2,6 +2,7 @@ import 'reflect-metadata'; // typeorm exige por conta que utilizamos decorators
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import 'express-async-errors'; // pra tratar erros assíncronos que vem das rotas
+import { errors } from 'celebrate'; // erros de validação
 
 import uploadConfig from '@config/upload'; // arquivo de configuração de upload de imagem
 import AppError from '@shared/errors/AppError'; // classe de erros
@@ -21,6 +22,8 @@ app.use(routes); // usando o arquivo index de rotas
 middleware de errors, tem que ser usado dps da rota, já que os erros acontecem nas rotas em si
 middleware específicos para tratar erros eles são obrigados a terem 4 parâmetros
 */
+
+app.use(errors()); // erros do celebrate
 
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
   // "_": pq não estou usando

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer'; // pra lidar com upload de imagem
+import { celebrate, Joi, Segments } from 'celebrate';
 
 import uploadConfig from '@config/upload';
 
@@ -15,7 +16,17 @@ const userAvatarController = new UserAvatarController();
 const upload = multer(uploadConfig); // instanciando o multer e passando as configurações de upload
 
 // middlewares
-usersRouter.post('/', usersController.create);
+usersRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    },
+  }),
+  usersController.create,
+);
 
 usersRouter.patch(
   '/avatar',
