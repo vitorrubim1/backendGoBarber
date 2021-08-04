@@ -2,6 +2,7 @@
 
 import AppError from '@shared/errors/AppError'; // classe de erros
 
+import FakeNotificationsRepository from '../../notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository'; // fakeRepositório que representa o repositório, só que sem dependência do typeorm e do banco de dados(somente js)
 import CreateAppointmentService from './CreateAppointmentService';
 
@@ -10,14 +11,18 @@ import CreateAppointmentService from './CreateAppointmentService';
 
 // variáveis global pra não repetir códigos
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let createAppointment: CreateAppointmentService;
 
 describe('CreateAppointment', () => {
   // beForEach instância cada um antes de cada teste
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
+    fakeNotificationsRepository = new FakeNotificationsRepository();
+
     createAppointment = new CreateAppointmentService(
       fakeAppointmentsRepository,
+      fakeNotificationsRepository,
     );
   });
 
@@ -37,7 +42,7 @@ describe('CreateAppointment', () => {
   });
 
   it('should not be able to create two appointments on the same time', async () => {
-    const appointmentDate = new Date(2021, 4, 10, 11);
+    const appointmentDate = new Date(2021, 8, 10, 11);
 
     await createAppointment.execute({
       date: appointmentDate,
