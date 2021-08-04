@@ -1,4 +1,5 @@
 import 'reflect-metadata'; // typeorm exige por conta que utilizamos decorators
+import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import 'express-async-errors'; // pra tratar erros assíncronos que vem das rotas

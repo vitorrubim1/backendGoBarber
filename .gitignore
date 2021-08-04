@@ -1,5 +1,7 @@
 /node_modules
 /temp
+.env
+ormconfig.json
 
 
 #tmp/* : ignorando todos arquivos da pasta tmp. !tmp/.gitkeep : menos o .gitkeep
