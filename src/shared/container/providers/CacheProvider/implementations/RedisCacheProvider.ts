@@ -30,13 +30,15 @@ export default class RedisCacheProvider implements ICacheProvider {
     return parsedData;
   }
 
-  public async invalidate(key: string): Promise<void> {}
+  public async invalidate(key: string): Promise<void> {
+    await this.client.del(key);
+  }
 
   public async invalidatePrefix(prefix: string): Promise<void> {
     // pegando os caches que iniciam com o prefixo do parâmetro, passando pro método keys() um pattern
     const keys = await this.client.keys(`${prefix}:*`);
 
-    // pipeline é mais perfomatico quando executamos multiplas operações ao mesmo tempo
+    // pipeline é mais perfomático quando executamos múltiplas operações ao mesmo tempo
     const pipeline = this.client.pipeline();
 
     keys.forEach(key => pipeline.del(key));
