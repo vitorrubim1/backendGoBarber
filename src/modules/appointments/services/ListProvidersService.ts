@@ -35,8 +35,6 @@ class ListProvidersService {
         except_user_id: user_id,
       });
 
-      console.log('query bd feita');
-
       // cacheando as informações da listagem de provedores de serviço, excluindo o user logado
       await this.cacheProvider.save(`providers-list:${user_id}`, users);
     }

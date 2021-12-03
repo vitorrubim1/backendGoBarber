@@ -36,7 +36,7 @@ class AuthenticateUserService {
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-    const user = await this.usersRepository.findByEmail(email); // tentando buscar algum usuário pelo email do parametro
+    const user = await this.usersRepository.findByEmail(email); // tentando buscar algum usuário pelo email do parâmetro
 
     if (!user) {
       throw new AppError('Incorrect email/password combination', 401); // descrevo que pode ser alguns dos dois por segurança
@@ -44,7 +44,7 @@ class AuthenticateUserService {
 
     /*
       variável user contém o email e senha
-      password que vem do parametro não está criptografada
+      password que vem do parâmetro não está criptografada
       user.password está criptografada
       compare do bcrypt: compara a senha não criptografada com a senha criptografada
     */
