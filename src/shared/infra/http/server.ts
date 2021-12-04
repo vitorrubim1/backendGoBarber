@@ -7,6 +7,7 @@ import { errors } from 'celebrate'; // erros de validação
 
 import uploadConfig from '@config/upload'; // arquivo de configuração de upload de imagem
 import AppError from '@shared/errors/AppError'; // classe de erros
+import rateLimiter from './middlewares/rateLimiter';
 
 import routes from './routes';
 import '@shared/infra/typeorm';
@@ -14,6 +15,7 @@ import '@shared/container'; // injeção de dependência
 
 const app = express();
 
+app.use(rateLimiter);
 app.use(cors()); // habilitando cors, para web requisitar
 app.use(express.json());
 app.use('/files', express.static(uploadConfig.uploadsFolder)); // servindo pra aplicação de forma estática o arquivo físico, as imagens
