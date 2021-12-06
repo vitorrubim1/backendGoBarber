@@ -24,9 +24,12 @@ class AppointmentsRepository implements IAppointmentsRepository {
   }
 
   // MÉTODO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA
-  public async findByDate(date: Date): Promise<Appointment | undefined> {
+  public async findByDate(
+    date: Date,
+    provider_id: string,
+  ): Promise<Appointment | undefined> {
     const findAppointment = await this.ormRepository.findOne({
-      where: { date }, // encontrar um agendamento que a data que eu recebo seja igual a alguma data no bd
+      where: { date, provider_id }, // encontrar um agendamento que a data que eu recebo seja igual a alguma data no bd
     });
 
     return findAppointment;

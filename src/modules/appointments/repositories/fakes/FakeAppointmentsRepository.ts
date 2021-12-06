@@ -13,9 +13,14 @@ export default class FakeAppointmentsRepository
   private appointments: Appointment[] = []; // array de appointments
 
   // MÉTODO PARA ENCONTRAR UM AGENDAMENTO PELA MESMA DATA
-  public async findByDate(date: Date): Promise<Appointment | undefined> {
-    const findAppointment = this.appointments.find(appointment =>
-      isEqual(appointment.date, date),
+  public async findByDate(
+    date: Date,
+    provider_id: string,
+  ): Promise<Appointment | undefined> {
+    const findAppointment = this.appointments.find(
+      appointment =>
+        isEqual(appointment.date, date) &&
+        appointment.provider_id === provider_id,
     ); // percorrendo a variável da linha 17 para encontrar um appointment que tenha a mesma data
 
     return findAppointment;

@@ -63,7 +63,8 @@ class CreateAppointmentService {
 
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
-    ); // passando pro método dentro do repository, a data formatada
+      provider_id,
+    ); // passando pro método dentro do repository, a data formatada e o id do prestador
 
     // ver se existe um agendamento com o mesmo horário
     if (findAppointmentInSameDate) {
