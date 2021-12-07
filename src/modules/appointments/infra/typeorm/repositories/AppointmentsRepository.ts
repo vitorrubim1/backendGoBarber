@@ -80,6 +80,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
             `to_char(${dateFieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
         ),
       },
+      relations: ['user'], // aqui faço uma relação com a tabela de usuário, trazendo suas informações
     });
 
     return appointments;
