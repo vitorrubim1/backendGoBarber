@@ -1,68 +1,152 @@
-<!-- Mapeando funcionalidades do sistema -->
+<h1 align="center">
+  <img alt="Logo" src="https://res.cloudinary.com/eliasgcf/image/upload/v1588625369/GoBarber/logo_iw1v9f.svg" width="200px">
+</h1>
 
-# Recuperação de senha
+<h3 align="center">
+  Express Application for GoBarber project
+</h3>
 
-**RF (requisitos funcionais)** <!-- funcionalidade -->
+<p align="center">The best way to schedule your service!</p>
 
-- O usuário deve poder recuperar sua senha informando seu email
-- O usuário deve receber um email com instruções de recuperação de senha
-- O usuário deve poder resetar sua senha
+<p align="center">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/EliasGcf/gobarber-api?color=%23FF9000">
 
-**RNF (requisitos não funcionais)** <!-- questões técnicas, lib... -->
+  <a href="https://www.linkedin.com/in/eliasgcf/" target="_blank" rel="noopener noreferrer">
+    <img alt="Made by" src="https://img.shields.io/badge/made%20by-elias%20gabriel-%23FF9000">
+  </a>
 
-- Utilizar o Mailtrap para testar os envios de email em desenvolvimento
-- Utilizar o Amazon SES para envio de email em produção
-- O envio de senha deve acontecer em segundo plano (background job || fila);
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/EliasGcf/gobarber-api?color=%23FF9000">
 
-**RN (regras de negócios)**
+  <a href="https://github.com/EliasGcf/gobarber-api/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/EliasGcf/gobarber-api?color=%23FF9000">
+  </a>
 
-- O Link enviado por email para resetar a senha deve expirar em 2h
-- O usuário deve confirmar a senha ao resetar
+  <a href="https://github.com/EliasGcf/gobarber-api/issues">
+    <img alt="Repository issues" src="https://img.shields.io/github/issues/EliasGcf/gobarber-api?color=%23FF9000">
+  </a>
 
-# Atualização do perfil
+  <img alt="GitHub" src="https://img.shields.io/github/license/EliasGcf/gobarber-api?color=%23FF9000">
+</p>
 
-**RF (requisitos funcionais)** <!-- funcionalidade -->
+<p align="center">
+  <a href="#%EF%B8%8F-about-the-project">About the project</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-getting-started">Getting started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-how-to-contribute">How to contribute</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-license">License</a>
+</p>
 
-- O usuário deve poder atualizar seu nome, email e senha
+<p id="insomniaButton" align="center">
+  <a href="https://insomnia.rest/run/?label=PontoLoc&uri=https%3A%2F%2Fraw.githubusercontent.com%2FEliasGcf%2Fpontoloc-api%2Fmaster%2FInsomnia.json" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
+</p>
 
-**RN (regras de negócios)**
+## 💇🏻‍♂️ About the project
 
-- O usuário não pode atualizar seu email para um email já utilizado
-- Para atualizar sua senha o usuário deve informar sua senha antiga
-- Para atualizar sua senha o usuário precisa confirmar sua nova senha
+This api provides everything needed to organize appointments between the barbers and customers.
 
-# Painel do prestador (dashboard)
+Customers can choose the best time available to them.
 
-**RF (requisitos funcionais)** <!-- funcionalidade -->
+Providers can see all their appointments, manage the times, also see if one client canceled the schedule.
 
-- O prestador deve poder listar os agendamentos de um dia específico
-- O prestador deve receber uma notificação sempre que houver um novo agendamento
-- O prestador deve poder visualizar as notificações não lida
+To see the **web client**, click here: [GoBarber Web](https://github.com/vitorrubim1/webGoBarber)<br />
+To see the **mobile client**, click here: [GoBarber Mobile](https://github.com/vitorrubim1/appGoBarber)
 
-**RNF (requisitos não funcionais)** <!-- questões técnicas, lib... -->
+## 🚀 Technologies
 
-- Os agendamentos do prestador devem ser mantidas em cache
-- As notificações do prestador devem ser armazenadas no MongoDB
-- As notificações do prestador devem ser enviadas em real time utilizando Socket.io
+Technologies that I used to develop this api
 
+- [Node.js](https://nodejs.org/en/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Express](https://expressjs.com/pt-br/)
+- [Multer](https://github.com/expressjs/multer)
+- [TypeORM](https://typeorm.io/#/)
+- [JWT-token](https://jwt.io/)
+- [uuid v4](https://github.com/thenativeweb/uuidv4/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Date-fns](https://date-fns.org/)
+- [Jest](https://jestjs.io/)
+- [SuperTest](https://github.com/visionmedia/supertest)
+- [Husky](https://github.com/typicode/husky)
+- [Commitlint](https://github.com/conventional-changelog/commitlint)
+- [Commitizen](https://github.com/commitizen/cz-cli)
+- [Eslint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+- [EditorConfig](https://editorconfig.org/)
 
-# Agendamentos de serviços
+## 💻 Getting started
 
-**RF (requisitos funcionais)** <!-- funcionalidade -->
+Import the `Insomnia.json` on Insomnia App or click on [Run in Insomnia](#insomniaButton) button
 
-- O usuário deve poder listar todos os prestadores de serviços
-- O usuário deve poder listar os dias de um mês com pelo menos um horário disponível de um prestador
-- O usuário deve poder listar horários disponíveis em um dia especifíco de um prestador
-- O usuário deve poder realizar um novo agendamento com um prestador
+### Requirements
 
-**RNF (requisitos não funcionais)** <!-- questões técnicas, lib... -->
+- [Node.js](https://nodejs.org/en/)
+- [Yarn](https://classic.yarnpkg.com/) or [npm](https://www.npmjs.com/)
+- One instance of [PostgreSQL](https://www.postgresql.org/)
 
-- A listagem de prestadores devem ser mantidas em cache
+> Obs.: I recommend use docker
+**Clone the project and access the folder**
 
-**RN (regras de negócios)**
+```bash
+$ git clone https://github.com/vitorrubim1/backendGoBarber && cd backendGoBarber
+```
 
-- Cada agendamento deve durar 1h exatamente
-- Os agendamentos devem estar disponíveis entre 8h as 18h
-- O usuário não pode agendar em um horário já agendado
-- O usuário não pode agendar em um horário que já passou
-- Um prestador não pode marcar horário consigo mesmo
+**Follow the steps below**
+
+```bash
+# Install the dependencies
+$ yarn
+# Make a copy of '.env.example' to '.env'
+# and set with YOUR environment variables.
+# The aws variables do not need to be filled for dev environment
+$ cp .env.example .env
+# Create the instance of postgreSQL using docker
+$ docker run --name gobarber-postgres -e POSTGRES_USER=docker \
+              -e POSTGRES_DB=gobarber -e POSTGRES_PASSWORD=docker \
+              -p 5432:5432 -d postgres
+# Create the instance of mongoDB using docker
+$ docker run --name gobarber-mongodb -p 27017:27017 -d -t mongo
+# Create the instance of redis using docker
+$ docker run --name gobarber-redis -p 6379:6379 -d -t redis:alpine
+# Make a copy of 'ormconfig.example.json' to 'ormconfig.json'
+# and set the values, if they are not filled,
+# to connect with docker database containers
+$ cp ormconfig.example.json ormconfig.json
+# Once the services are running, run the migrations
+$ yarn typeorm migration:run
+# To finish, run the api service
+$ yarn dev:server
+# Well done, project is started!
+```
+
+## 🤔 How to contribute
+
+**Make a fork of this repository**
+
+```bash
+# Fork using GitHub official command line
+# If you don't have the GitHub CLI, use the web site to do that.
+$ gh repo fork Vitorrubim1/backendGoBarber
+```
+
+**Follow the steps below**
+
+```bash
+# Clone your fork
+$ git clone your-fork-url && cd backendGoBarber
+# Create a branch with your feature
+$ git checkout -b my-feature
+# Make the commit with your changes
+$ git commit -m 'feat: My new feature'
+# Send the code to your remote branch
+$ git push origin my-feature
+```
+
+After your pull request is merged, you can delete your branch
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Made with 💜 &nbsp;by Vitor Rubim 👋 &nbsp;[See my linkedin](https://www.linkedin.com/in/vitor-rubim-006ba2164/)
