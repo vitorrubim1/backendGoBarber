@@ -7,19 +7,19 @@ import {
   ObjectIdColumn,
 } from 'typeorm';
 
-@Entity('notifications') // nome do schema(tabela)
+@Entity('notifications')
 class Notification {
   @ObjectIdColumn()
   id: ObjectID;
 
   @Column()
-  content: string; // texto da notificação
+  content: string;
 
   @Column('uuid')
-  recipient_id: string; // user id
+  recipient_id: string;
 
   @Column({ default: false })
-  read: boolean; // já foi lida ou não
+  read: boolean;
 
   @CreateDateColumn()
   created_at: Date;
