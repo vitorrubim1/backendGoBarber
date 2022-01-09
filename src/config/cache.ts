@@ -1,6 +1,6 @@
 import { RedisOptions } from 'ioredis';
 
-export interface ICacheConfig {
+interface ICacheConfig {
   driver: 'redis';
 
   config: {

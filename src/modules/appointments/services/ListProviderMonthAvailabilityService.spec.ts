@@ -1,9 +1,6 @@
-// ARQUIVO DE TESTE
-
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProviderMonthAvailabilityService from './ListProviderMonthAvailabilityService';
 
-// variáveis global pra não repetir códigos
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let listProviderMonthAvailability: ListProviderMonthAvailabilityService;
 
@@ -16,7 +13,7 @@ describe('ListProviderMonthAvailability', () => {
   });
 
   it('should be able to list the month availability from provider', async () => {
-    // criando agendamentos
+    // Criando agendamentos
     await fakeAppointmentsRepository.create({
       provider_id: 'user',
       user_id: 'user',
@@ -97,6 +94,6 @@ describe('ListProviderMonthAvailability', () => {
         { day: 22, available: true },
       ]),
     );
-    // espero que o availability seja igual a um array, arrayContaining: verá se a resposta do availability é um array contendo o que é passado dentro do paramêtro
+    // Espero que o availability seja igual a um array, arrayContaining: verá se a resposta do availability é um array contendo o que é passado dentro do parâmetro
   });
 });

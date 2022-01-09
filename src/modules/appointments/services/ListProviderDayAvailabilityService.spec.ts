@@ -1,19 +1,15 @@
-// ARQUIVO DE TESTE
-
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import ListProviderDayAvailabilityService from './ListProviderDayAvailabilityService';
 
-// variáveis global pra não repetir códigos
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let listProviderDayAvailability: ListProviderDayAvailabilityService;
 
 describe('ListProviderDayAvailability', () => {
-  // beForEach instância cada um antes de cada teste
   beforeEach(() => {
     fakeAppointmentsRepository = new FakeAppointmentsRepository();
     listProviderDayAvailability = new ListProviderDayAvailabilityService(
       fakeAppointmentsRepository,
-    ); // criando o service, e recebendo o repositório fake, pra testes
+    );
   });
 
   it('should be able to list the day availability from provider', async () => {
@@ -29,7 +25,7 @@ describe('ListProviderDayAvailability', () => {
       date: new Date(2021, 4, 20, 15, 0, 0),
     });
 
-    // verificando se um horário que já passou não está mais disponível
+    // Verificando se um horário que já passou não está mais disponível
     jest.spyOn(Date, 'now').mockImplementationOnce(() => {
       return new Date(2021, 4, 20, 11).getTime(); // 11h
     });
@@ -43,7 +39,7 @@ describe('ListProviderDayAvailability', () => {
 
     expect(availability).toEqual(
       expect.arrayContaining([
-        { hour: 8, available: false }, // já tem nesse horário então é pra dar false
+        { hour: 8, available: false }, // Já tem nesse horário então é pra dar false
         { hour: 9, available: false },
         { hour: 10, available: false },
         { hour: 13, available: true },
@@ -52,6 +48,6 @@ describe('ListProviderDayAvailability', () => {
         { hour: 16, available: true },
       ]),
     );
-    // espero que o availability seja igual a um array, arrayContaining: verá se a resposta do availability é um array contendo o que é passado dentro do paramêtro
+    // Espero que o availability seja igual a um array, arrayContaining: verá se a resposta do availability é um array contendo o que é passado dentro do paramêtro
   });
 });

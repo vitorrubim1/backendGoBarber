@@ -2,13 +2,11 @@ import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepo
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import ListProvidersService from './ListProvidersService';
 
-// variáveis global pra não repetir códigos
 let fakeUsersRepository: FakeUsersRepository;
 let listProviders: ListProvidersService;
 let fakeCacheProvider: FakeCacheProvider;
 
 describe('ListProviders', () => {
-  // beForEach instância cada um antes de cada teste
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeCacheProvider = new FakeCacheProvider();

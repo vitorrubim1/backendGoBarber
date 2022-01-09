@@ -5,17 +5,14 @@ import { classToClass } from 'class-transformer';
 import UpdateProfileService from '@modules/users/services/UpdateProfileService';
 import ShowProfileService from '@modules/users/services/ShowProfileService';
 
+// Dados do perfil
 export default class ProfileController {
   public async show(request: Request, response: Response): Promise<Response> {
-    // exibição do perfil
-
     const user_id = request.user.id;
 
     const showProfile = container.resolve(ShowProfileService);
 
-    const user = await showProfile.execute({
-      user_id,
-    });
+    const user = await showProfile.execute({ user_id });
 
     return response.json(classToClass(user));
   }
@@ -32,7 +29,7 @@ export default class ProfileController {
       email,
       old_password,
       password,
-    }); // executando do service o método de criação, e passando os parâmetros
+    });
 
     return response.json(classToClass(user));
   }

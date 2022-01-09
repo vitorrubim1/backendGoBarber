@@ -1,11 +1,11 @@
-import Appointment from '../infra/typeorm/entities/Appointment';
-import ICreateAppointmentDTO from '../dtos/ICreateAppointmentDTO';
-import IFindAllInMonthFromProviderDTO from '../dtos/IFindAllInMonthFromProviderDTO';
+import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
+import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
+import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 import IFindAllInDayFromProviderDTO from '../dtos/IFindAllInDayFromProviderDTO';
 
-// arquivo que será responsável por dizer qual são os métodos que o repository dentro do typeorm>repository terá.
+// Arquivo que será responsável por dizer qual são os métodos que o repository dentro do typeorm>repository terá.
 export default interface IAppointmentsRepository {
-  create(data: ICreateAppointmentDTO): Promise<Appointment>; // já que estou desacoplando a aplicação do typeorm, estou "criando/definindo" qual será as informações que meu método de criação terá
+  create(data: ICreateAppointmentDTO): Promise<Appointment>;
   findByDate(data: Date, provider_id: string): Promise<Appointment | undefined>;
 
   findAllInMonthFromProvider(

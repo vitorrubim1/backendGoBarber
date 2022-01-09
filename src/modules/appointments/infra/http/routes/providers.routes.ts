@@ -1,20 +1,19 @@
 import { Router } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
 
-import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated'; // middleware de validação de autenticação
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import ProvidersController from '../controllers/ProvidersController';
 import ProviderMonthAvailabilityController from '../controllers/ProviderMonthAvailabilityController';
 import ProviderDayAvailabilityController from '../controllers/ProviderDayAvailabilityController';
 
-// desacoplo, pra conseguir usar os métodos
 const providersRouter = Router();
 const providersController = new ProvidersController();
 const providerMonthAvailabilityController = new ProviderMonthAvailabilityController();
 const providerDayAvailabilityController = new ProviderDayAvailabilityController();
 
-providersRouter.use(ensureAuthenticated); // para que todas as rotas usem a validação de autenticação
+providersRouter.use(ensureAuthenticated);
 
-// middleware
+// Middlewares
 providersRouter.get('/', providersController.index);
 
 providersRouter.get(

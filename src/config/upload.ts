@@ -1,22 +1,32 @@
-import path from 'path'; // para lidar com caminhos dentro da aplicação, de forma global
+import path from 'path';
+import multer, { StorageEngine } from 'multer';
 import crypto from 'crypto';
-import multer from 'multer'; // pra lidar com upload de imagem
 
-const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp'); // destino da imagem
+interface IStorageConfig {
+  driver: 's3' | 'disk';
+  tmpFolder: string;
+  uploadsFolder: string;
+  multer: {
+    storage: StorageEngine;
+  };
+}
+
+const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp');
 
 export default {
+  driver: process.env.STORAGE_DRIVER,
   tmpFolder,
-  uploadsFolder: path.resolve(tmpFolder, 'uploads'), // caminho uploads dentro de tmp
+  uploadsFolder: path.resolve(tmpFolder, 'uploads'),
 
-  storage: multer.diskStorage({
-    // diskStorage, guardar images na máquina
-    destination: tmpFolder,
-    filename(request, file, callback) {
-      // nome que a imagem terá
-      const fileHash = crypto.randomBytes(10).toString('hex'); // gerando 10 caracteres aleatórios
-      const fileName = `${fileHash}-${file.originalname}`; // hash-nome-original-do-arquivo
+  multer: {
+    storage: multer.diskStorage({
+      destination: tmpFolder,
+      filename(request, file, callback) {
+        const fileHash = crypto.randomBytes(16).toString('hex');
+        const fileName = `${fileHash}-${file.originalname}`;
 
-      return callback(null, fileName);
-    },
-  }),
-};
+        return callback(null, fileName);
+      },
+    }),
+  },
+} as IStorageConfig;

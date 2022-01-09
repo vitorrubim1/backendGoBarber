@@ -1,9 +1,7 @@
-// listar as horas disponíveis de um prestador em um mês
-
 import { injectable, inject } from 'tsyringe';
-import { getHours, isAfter } from 'date-fns'; // getDaysInMonth: quantos dias tem no mês, getDate: retorna o dia
+import { getHours, isAfter } from 'date-fns';
 
-import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 
 interface IRequest {
   provider_id: string;
@@ -17,6 +15,7 @@ type IResponse = Array<{
   available: boolean;
 }>;
 
+// Listar as horas disponíveis de um prestador em um mês
 @injectable()
 class ListProviderDayAvailabilityService {
   constructor(
@@ -26,42 +25,41 @@ class ListProviderDayAvailabilityService {
 
   public async execute({
     provider_id,
-    year,
-    month,
     day,
+    month,
+    year,
   }: IRequest): Promise<IResponse> {
     const appointments = await this.appointmentsRepository.findAllInDayFromProvider(
       {
         provider_id,
-        year,
-        month,
         day,
+        month,
+        year,
       },
     );
 
-    // horas disponíveis
-
+    // Horas disponíveis
     const hourStart = 8; // horário de início
 
-    // criando array
+    /// Criando array que irá começar as 8h da manhã e terá um length de 10, pq só é possível 10 agendamentos em um dia
     const eachHourArray = Array.from(
       { length: 10 },
-      (_, index) => index + hourStart, // pra começar as 8h da manhã
-    ); // vai ter um length de 10, pq só é possível em um dia 10 agendamentos
+      (_, index) => index + hourStart,
+    );
 
     const currentDate = new Date(Date.now());
 
-    // verificando quais são as horas disponíveis
+    // Verificando quais são as horas disponíveis
     const availability = eachHourArray.map(hour => {
       const hasAppointmentInHour = appointments.find(
         appointment => getHours(appointment.date) === hour,
       );
 
-      const compareDate = new Date(year, month - 1, day, hour); // informações que recebo por parâmetro
+      const compareDate = new Date(year, month - 1, day, hour);
 
       return {
         hour,
-        available: !hasAppointmentInHour && isAfter(compareDate, currentDate), // se a hora do parâmetro já passou, não terá mais disponibilidade
+        available: !hasAppointmentInHour && isAfter(compareDate, currentDate),
       };
     });
 
