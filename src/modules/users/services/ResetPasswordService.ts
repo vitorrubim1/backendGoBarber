@@ -11,7 +11,7 @@ interface IRequest {
   token: string;
 }
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable()
 class ResetPasswordService {
   constructor(
     @inject('UsersRepository')
@@ -37,15 +37,12 @@ class ResetPasswordService {
       throw new AppError('User does not exists');
     }
 
-    const tokenCreatedAt = userToken.created_at; // hora de criação do token
-    const compareDate = addHours(tokenCreatedAt, 2); // adicionando 2h a hora de criação do token
+    const tokenCreatedAt = userToken.created_at;
+    const compareDate = addHours(tokenCreatedAt, 2);
 
-    if (isAfter(Date.now(), compareDate)) {
-      // se a hora atual for maior q data de criação do token + 2
-      throw new AppError('Token expired');
-    }
+    if (isAfter(Date.now(), compareDate)) throw new AppError('Token expired');
 
-    user.password = await this.hashProvider.generateHash(password); // nova senha criptografada
+    user.password = await this.hashProvider.generateHash(password);
 
     await this.usersRepository.save(user);
   }

@@ -1,8 +1,7 @@
-import User from '../infra/typeorm/entities/User'; // model de user
+import User from '@modules/users/infra/typeorm/entities/User';
+import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import IFindAllProvidersDTO from '../dtos/IFindAllProvidersDTO';
-import ICreateUserDTO from '../dtos/ICreateUserDTO';
 
-// arquivo que será responsável por dizer qual são os métodos que o repository dentro do typeorm>repository terá.
 export default interface IUsersRepository {
   findAllProviders(data: IFindAllProvidersDTO): Promise<User[]>;
   findById(id: string): Promise<User | undefined>;

@@ -6,12 +6,6 @@ import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
-/*
-service responsável por adicionar uma imagem a um usuário,
-por apagar uma imagem antiga caso o usuário esteja fazendo um update
-somente alterar caso o usuário que esteja autenticado exista
-*/
-
 interface IRequest {
   user_id: string;
   name: string;
@@ -45,7 +39,6 @@ class UpdateProfileService {
 
     const userWithUpdatedEmail = await this.usersRepository.findByEmail(email);
 
-    // verificando se o email que será atualizado é diferente de algum outro cadastrado
     if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user_id) {
       throw new AppError('E-mail already in use.');
     }
@@ -60,15 +53,12 @@ class UpdateProfileService {
     }
 
     if (password && old_password) {
-      // verificando se a antiga senha informada está correta
       const checkOldPassword = await this.hashProvider.compareHash(
         old_password,
         user.password,
       );
 
-      if (!checkOldPassword) {
-        throw new AppError('Old password does not match.');
-      }
+      if (!checkOldPassword) throw new AppError('Old password does not match.');
 
       user.password = await this.hashProvider.generateHash(password);
     }

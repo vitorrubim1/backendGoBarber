@@ -44,7 +44,7 @@ describe('UpdateUserAvatar', () => {
   });
 
   it('should delete old avatar when updating new one', async () => {
-    const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile'); // spyOn: método do jest para espionar se uma função foi executada, retornando a função que quero espionar
+    const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
@@ -54,15 +54,15 @@ describe('UpdateUserAvatar', () => {
 
     await updateUserAvatar.execute({
       user_id: user.id,
-      avatarFilename: 'avatar.jpg', // avatar antigo
+      avatarFilename: 'avatar.jpg',
     });
 
     await updateUserAvatar.execute({
       user_id: user.id,
-      avatarFilename: 'avatar2.jpg', // novo avatar
+      avatarFilename: 'avatar2.jpg',
     });
 
-    expect(deleteFile).toHaveBeenCalledWith('avatar.jpg'); // espero que a função 'deleteFile' tenha sido chamada me retornando a foto antiga
-    expect(user.avatar).toBe('avatar2.jpg'); // como o service retorna o avatar do user atualizado, eu espero que isso seja retornado
+    expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
+    expect(user.avatar).toBe('avatar2.jpg');
   });
 });

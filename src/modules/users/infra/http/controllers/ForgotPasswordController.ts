@@ -5,18 +5,16 @@ import SendForgotPasswordEmailService from '@modules/users/services/SendForgotPa
 
 export default class ForgotPasswordController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { email } = request.body; // pra fazer o reset, é necessário o email
+    const { email } = request.body;
 
-    // instancio a classe de autenticação e executo
     const sendForgotPasswordEmail = container.resolve(
       SendForgotPasswordEmailService,
-    ); // toda vez que for utilizar um service instanciarei dessa forma
+    );
 
     await sendForgotPasswordEmail.execute({
       email,
     });
 
-    // status 204: deu sucesso mas não tem retorno
     return response.status(204).json();
   }
 }

@@ -5,12 +5,6 @@ import AppError from '@shared/errors/AppError';
 import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 
-/*
-service responsável por adicionar uma imagem a um usuário,
-por apagar uma imagem antiga caso o usuário esteja fazendo um update
-somente alterar caso o usuário que esteja autenticado exista
-*/
-
 interface IRequest {
   user_id: string;
 }
@@ -25,9 +19,7 @@ class ShowProfileService {
   public async execute({ user_id }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
-    if (!user) {
-      throw new AppError('User not found.');
-    }
+    if (!user) throw new AppError('User not found.');
 
     return user;
   }

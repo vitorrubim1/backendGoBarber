@@ -1,9 +1,9 @@
 import { inject, injectable } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError'; // classe de erros
+import AppError from '@shared/errors/AppError';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-import IUsersRepository from '../repositories/IUsersRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
 import User from '../infra/typeorm/entities/User';
 
@@ -13,39 +13,35 @@ interface IRequest {
   password: string;
 }
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable()
 class CreateUserService {
   constructor(
-    @inject('UsersRepository') // decorator, injetando o repository de appointment
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider, // criptografia e descriptografia de senha
+    private hashProvider: IHashProvider,
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ name, email, password }: IRequest): Promise<User> {
-    // Promise<User>: metódo assíncrono que vai retornar um usuário
-
-    // checando se já existe algum usuário com o email da request
     const checkUserExist = await this.usersRepository.findByEmail(email);
 
     if (checkUserExist) {
       throw new AppError('Email address already used.');
     }
 
-    const hashedPassword = await this.hashProvider.generateHash(password); // criptografando a senha
+    const hashedPassword = await this.hashProvider.generateHash(password);
 
-    // criando a instância do usuário
     const user = await this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
     });
 
-    // quando um usuário é criado preciso invalidar o cache da listagem de providers
+    // Quando um usuário é criado preciso invalidar o cache da listagem de providers
     await this.cacheProvider.invalidatePrefix('providers-list');
 
     return user;

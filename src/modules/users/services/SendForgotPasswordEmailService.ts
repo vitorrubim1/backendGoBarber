@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import path from 'path';
 
-import AppError from '@shared/errors/AppError'; // classe de erros
-import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider'; // provedor de envio de emails
+import AppError from '@shared/errors/AppError';
+import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IUserTokensRepository from '../repositories/IUserTokensRepository';
 
@@ -10,10 +10,10 @@ interface IRequest {
   email: string;
 }
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+@injectable()
 class SendForgotPasswordEmailService {
   constructor(
-    @inject('UsersRepository') // decorator, injetando o repository de users
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
     @inject('MailProvider')
@@ -26,14 +26,10 @@ class SendForgotPasswordEmailService {
   public async execute({ email }: IRequest): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
 
-    if (!user) {
-      throw new AppError('User does not exists');
-    }
+    if (!user) throw new AppError('User does not exists');
 
-    // gerando o token
     const { token } = await this.userTokensRepository.generate(user.id);
 
-    // caminho pro arquivo de template
     const forgotPasswordTemplate = path.resolve(
       __dirname,
       '..',
@@ -49,7 +45,7 @@ class SendForgotPasswordEmailService {
         variables: {
           name: user.name,
           link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
-        }, // essa variável preenche a variável do template
+        }, // Essa variável preenche a variável do template
       },
     });
   }

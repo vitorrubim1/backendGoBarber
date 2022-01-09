@@ -6,15 +6,12 @@ import AuthenticateUserService from '@modules/users/services/AuthenticateUserSer
 
 export default class SessionsController {
   public async create(request: Request, response: Response): Promise<Response> {
-    const { email, password } = request.body; // pra fazer autenticação, é necessário email e senha
+    const { email, password } = request.body;
 
-    // instancio a classe de autenticação e executo
-    const authenticateUser = container.resolve(AuthenticateUserService); // toda vez que for utilizar um service instanciarei dessa forma
-    const { user, token } = await authenticateUser.execute({
-      email,
-      password,
-    }); // desacoplei a resposta da classe pra ficar mais semântico e saber oq estou retornando para o frontend
+    const authenticateUser = container.resolve(AuthenticateUserService);
 
-    return response.json({ user: classToClass(user), token });
+    const { user, token } = await authenticateUser.execute({ email, password });
+
+    return response.status(200).json({ user: classToClass(user), token });
   }
 }

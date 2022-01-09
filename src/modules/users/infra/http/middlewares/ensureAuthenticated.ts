@@ -1,19 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
 
-import authConfig from '@config/auth'; // configurações do token
-import AppError from '@shared/errors/AppError'; // classe de erros
+import authConfig from '@config/auth';
+import AppError from '@shared/errors/AppError';
 
-// middleware responsável por verificar se o usuário está realmente autenticado
-
+// iat: Quando token foi gerado. exp: Quando irá expirar. sub: nesse caso é o id do user, que será usado pra listar agendamentos...
 interface ITokenPayload {
-  // informações que vem no token
-  iat: number; // quando token foi gerado
-  exp: number; // quando irá expirar
-  sub: string; // nesse caso é o id do user, que será usado pra listar agendamentos...
+  iat: number;
+  exp: number;
+  sub: string;
 }
 
-// tipando manualmente já que não utilizamos a rota aq
+// Middleware responsável por verificar se o usuário está realmente autenticado
 export default function ensureAuthenticated(
   request: Request,
   response: Response,
@@ -21,31 +19,26 @@ export default function ensureAuthenticated(
 ): void {
   // next será responsável por prosseguir para as outras rotas, se ele não for chamado quer dizer que user não está autenticado
 
-  // validação do token JWT
-  const authHeader = request.headers.authorization; // token que vem do header da requisição
+  const authHeader = request.headers.authorization;
 
   if (!authHeader) {
     throw new AppError('JWT token is missing', 401);
   }
 
-  /*
-    se existe o token, preciso separar o "Bearer" do token em si "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-    e o que separa o Bearer do token é um espaço, ex: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9, então:
-  */
-
-  const [, token] = authHeader.split(' '); // split retorna um array, o token em si vem na segunda posição
+  const [, token] = authHeader.split(' ');
 
   try {
-    const decoded = verify(token, authConfig.jwt.secret); // verificando se o token é válido
+    // Verificando se o token é válido
+    const decoded = verify(token, authConfig.jwt.secret);
 
-    const { sub } = decoded as ITokenPayload; // forçando a tipagem de uma variável
+    const { sub } = decoded as ITokenPayload;
 
+    // Redeclarei a tipagem do express e adicionei essa informação de user, pra que todas as rotas tenham acesso ao id do usuário
     request.user = {
-      // redeclarei a tipagem do express e adicionei essa informação de user, pra que todas as rotas tenham acesso ao id do usuário
-      id: sub, // dizendo que o id, é igual o sub que vem do token
+      id: sub,
     };
 
-    return next(); // permitir que o usuário continue usando a aplicação, caso o token esteja válido
+    return next();
   } catch (error) {
     throw new AppError('Invalid JWT token', 401);
   }

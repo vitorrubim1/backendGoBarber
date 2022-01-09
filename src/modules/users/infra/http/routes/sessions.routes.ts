@@ -4,9 +4,9 @@ import { celebrate, Joi, Segments } from 'celebrate';
 import SessionsController from '../controllers/SessionsController';
 
 const sessionsRouter = Router();
-const sessionsController = new SessionsController(); // desacoplo, pra conseguir usar os métodos
+const sessionsController = new SessionsController();
 
-// rota de autenticação
+// Rota de autenticação
 sessionsRouter.post(
   '/',
   celebrate({

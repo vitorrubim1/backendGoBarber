@@ -4,12 +4,11 @@ import { celebrate, Joi, Segments } from 'celebrate';
 import ForgotPasswordController from '../controllers/ForgotPasswordController';
 import ResetPasswordController from '../controllers/ResetPasswordController';
 
-// desacoplando, pra conseguir usar os métodos
 const passwordRouter = Router();
 const forgotPasswordController = new ForgotPasswordController();
 const resetPasswordController = new ResetPasswordController();
 
-// rotas
+// Rotas
 passwordRouter.post(
   '/forgot',
   celebrate({

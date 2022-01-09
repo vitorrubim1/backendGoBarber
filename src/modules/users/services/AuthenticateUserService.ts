@@ -1,18 +1,12 @@
-import { sign } from 'jsonwebtoken'; // sign: pra criar um token/ assinar
+import { sign } from 'jsonwebtoken';
 import { inject, injectable } from 'tsyringe';
 
-import authConfig from '@config/auth'; // configurações do token
-import AppError from '@shared/errors/AppError'; // classe de erros
+import authConfig from '@config/auth';
+import AppError from '@shared/errors/AppError';
 
-import User from '../infra/typeorm/entities/User'; // representa uma tabela no banco
-import IUsersRepository from '../repositories/IUsersRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
-
-/*
- aq estará a regra de autenticação.
- irá ver se o email e senha é valido;
- e caso seja, gerar um token jwt
-*/
+import User from '@modules/users/infra/typeorm/entities/User';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
   email: string;
@@ -20,56 +14,43 @@ interface IRequest {
 }
 
 interface IResponse {
-  // retorno, caso a autenticação dê certo
   user: User;
   token: string;
 }
 
-@injectable() // digo que essa classe abaixo, é injetavel, recebe injeção de dependência, através do inject()
+// Aq estará a regra de autenticação, irá ver se o email e senha é valido e caso seja ir gerar um token jwt
+@injectable()
 class AuthenticateUserService {
   constructor(
-    @inject('UsersRepository') // decorator, injetando o repository de appointment
+    @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider, // criptografia e descriptografia de senha
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({ email, password }: IRequest): Promise<IResponse> {
-    const user = await this.usersRepository.findByEmail(email); // tentando buscar algum usuário pelo email do parâmetro
+    const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError('Incorrect email/password combination', 401); // descrevo que pode ser alguns dos dois por segurança
+      throw new AppError('Incorrect email/password combination', 401);
     }
-
-    /*
-      variável user contém o email e senha
-      password que vem do parâmetro não está criptografada
-      user.password está criptografada
-      compare do bcrypt: compara a senha não criptografada com a senha criptografada
-    */
 
     const passwordMatched = await this.hashProvider.compareHash(
       password,
       user.password,
-    ); // retorna booleano
+    );
 
     if (!passwordMatched) {
       throw new AppError('Incorrect email/password combination', 401);
     }
 
-    // Chegou até aqui, usuário autenticado
-
-    const { expiresIn, secret } = authConfig.jwt; // desacoplando as informações do token pra usar aq em baixo
+    const { expiresIn, secret } = authConfig.jwt;
 
     const token = sign({}, secret, {
       subject: user.id,
       expiresIn,
-    }); /*
-      primeiro parâmetro: payload (dá pra descriptografar). Fica dentro do token, mas não fica seguro
-      segundo parâmetro: chave secreta, que só a aplicação possa entender, só gerar qualquer coisa no md5 online
-      terceiro parâmetro: configurações do token, como id e tempo pra expirar o token
-    */
+    });
 
     return {
       user,

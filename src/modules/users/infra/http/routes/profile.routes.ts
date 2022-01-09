@@ -3,14 +3,13 @@ import { celebrate, Joi, Segments } from 'celebrate';
 
 import ProfileController from '../controllers/ProfileController';
 
-import ensureAuthenticated from '../middlewares/ensureAuthenticated'; // middleware de validação de autenticação
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 
-// desacoplo, pra conseguir usar os métodos
 const profileRouter = Router();
 const profileController = new ProfileController();
 
-// middlewares
-profileRouter.use(ensureAuthenticated); // rota autenticada
+// Middlewares
+profileRouter.use(ensureAuthenticated);
 
 profileRouter.get('/', profileController.show);
 profileRouter.put(
